@@ -59,7 +59,7 @@
 		<nav
 			class="sticky top-0 z-20 flex items-center justify-between border-b-2 border-l-2 px-5 py-2 backdrop-blur-lg"
 		>
-			<Button class="gap-1.5">
+			<Button href="/" class="gap-1.5">
 				<LogOut class="h-[20px] w-[20px]" />
 				Log out
 			</Button>

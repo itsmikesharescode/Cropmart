@@ -37,7 +37,9 @@
 	});
 </script>
 
-{@render children()}
+<div class="bg-yellow-500/20">
+	{@render children()}
+</div>
 
 <style>
 	:global(html) {

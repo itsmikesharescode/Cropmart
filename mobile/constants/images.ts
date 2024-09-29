@@ -4,8 +4,8 @@ import cropmart from '../assets/images/cropmart-landing.png';
 import cropmart_logo from '../assets/images/cropmart-logo.png';
 
 export const images = {
-  cropmart,
-  path,
-  empty,
-  cropmart_logo,
+	cropmart,
+	path,
+	empty,
+	cropmart_logo
 };

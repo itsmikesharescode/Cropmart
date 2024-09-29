@@ -11,7 +11,7 @@
 	import '../app.css';
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import Nav from './admin/_components/Nav.svelte';
+	import { onNavigate } from '$app/navigation';
 
 	const { data: layoutSB, children } = $props();
 
@@ -24,9 +24,20 @@
 
 		return () => data.subscription.unsubscribe();
 	});
+
+	onNavigate((navigation) => {
+		if (!document.startViewTransition) return;
+
+		return new Promise((resolve) => {
+			document.startViewTransition(async () => {
+				resolve();
+				await navigation.complete;
+			});
+		});
+	});
 </script>
 
-<Nav {children} />
+{@render children()}
 
 <style>
 	:global(html) {

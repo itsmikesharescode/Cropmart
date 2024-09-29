@@ -4,4 +4,6 @@
 	const { data, children } = $props();
 </script>
 
-<Nav {children} />
+<div class="mx-auto max-w-[1200px]">
+	<Nav {children} />
+</div>

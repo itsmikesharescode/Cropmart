@@ -12,7 +12,7 @@
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { onNavigate } from '$app/navigation';
-
+	import { Toaster } from '$lib/components/ui/sonner';
 	const { data: layoutSB, children } = $props();
 
 	onMount(() => {
@@ -37,6 +37,7 @@
 	});
 </script>
 
+<Toaster />
 <div class="bg-yellow-500/20">
 	{@render children()}
 </div>

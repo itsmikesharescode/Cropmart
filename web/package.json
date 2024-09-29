@@ -34,9 +34,11 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@fontsource/poppins": "^5.1.0",
 		"@internationalized/date": "^3.5.5",
 		"@supabase/ssr": "^0.5.1",
 		"@supabase/supabase-js": "^2.45.4",
+		"@sveltejs/enhanced-img": "^0.3.8",
 		"bits-ui": "^0.21.15",
 		"clsx": "^2.1.1",
 		"cmdk-sv": "^0.0.18",

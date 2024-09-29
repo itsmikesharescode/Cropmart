@@ -4,6 +4,7 @@
 	import { LogOut } from 'lucide-svelte';
 	import { page } from '$app/stores';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import AdminLogout from './AdminLogout.svelte';
 
 	interface Props {
 		children: Snippet;
@@ -59,10 +60,7 @@
 		<nav
 			class="sticky top-0 z-20 flex items-center justify-between border-b-2 border-l-2 px-5 py-2 backdrop-blur-lg"
 		>
-			<Button href="/" class="gap-1.5">
-				<LogOut class="h-[20px] w-[20px]" />
-				Log out
-			</Button>
+			<AdminLogout />
 			<div class="flex items-center gap-2.5">
 				<p class="font-semibold leading-7 text-muted-foreground">Admin, <strong>Kaloy</strong></p>
 				<div class="h-[45px] w-[45px] rounded-full bg-red-500"></div>

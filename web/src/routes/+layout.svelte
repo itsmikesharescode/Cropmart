@@ -2,6 +2,7 @@
 	import '../app.css';
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import Nav from './admin/_components/Nav.svelte';
 
 	const {data: layoutSB, children} = $props()
 
@@ -16,4 +17,6 @@
 	});
 </script>
 
-{@render children()}
+<Nav {children} />
+
+

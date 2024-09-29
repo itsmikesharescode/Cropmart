@@ -1,7 +1,4 @@
 <script lang="ts">
-
 </script>
 
-<div class="">
-    
-</div>
+<div class=""></div>

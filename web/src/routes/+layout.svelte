@@ -4,7 +4,7 @@
 	import { onMount } from 'svelte';
 	import Nav from './admin/_components/Nav.svelte';
 
-	const {data: layoutSB, children} = $props()
+	const { data: layoutSB, children } = $props();
 
 	onMount(() => {
 		const { data } = layoutSB.supabase.auth.onAuthStateChange((_, newSession) => {
@@ -18,5 +18,3 @@
 </script>
 
 <Nav {children} />
-
-

@@ -21,6 +21,7 @@ import { supabase } from '@/lib/supabase';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import { useState } from 'react';
 import { useBookmarksSelector } from '../_store/bookmarkStore';
+import SearchInput from '@/components/SearchInput';
 
 const CategorySnippet = () => {
   const categories = useCategorySelector((state) => state.categories);
@@ -180,6 +181,7 @@ const HomeScreen = () => {
           renderItem={({ item }) => <ProductSnippet {...item} />}
           ListHeaderComponent={() => (
             <View className="gap-2 mt-16">
+              <SearchInput initialQuery="" placeholder="Search for product name" />
               <CategorySnippet />
               <Text className="font-psemibold text-[20px] text-primary">Products</Text>
             </View>

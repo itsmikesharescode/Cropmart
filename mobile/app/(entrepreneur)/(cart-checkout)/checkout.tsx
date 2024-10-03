@@ -43,9 +43,10 @@ const CheckoutScreen = () => {
   const resetCart = useCartSelector((state) => state.resetCart);
   const setProcessings = useProcessingsSelector((state) => state.setProcessings);
 
-  const handleCheckout = async () => {
+  const handleCheckout = async (paymentType: 'direct payment' | 'rider delivery payment') => {
     const { data, error } = (await supabase.rpc('insert_purchase', {
-      purchase_obj_input: cart
+      purchase_obj_input: cart,
+      purchase_type_input: paymentType
     })) as PostgrestSingleResponse<ProcessingType[]>;
 
     if (error) {
@@ -92,8 +93,15 @@ const CheckoutScreen = () => {
 
         <View>
           <CustomButton
-            title="Confirm Payment"
-            handPress={handleCheckout}
+            title="Direct Payment"
+            handPress={() => handleCheckout('direct payment')}
+            containerStyle="mt-2"
+            isLoading={false}
+          />
+
+          <CustomButton
+            title="Rider Delivery Payment"
+            handPress={() => handleCheckout('rider delivery payment')}
             containerStyle="mt-2"
             isLoading={false}
           />

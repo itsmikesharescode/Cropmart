@@ -9,6 +9,7 @@ const ProcessingSnippet: React.FC<RiderLayoutQ['processings'][number]> = (transa
 
   const checkStatusName = (name: string) => {
     if (name === 'Delivered') return 'bg-green-500 text-white';
+    if (name === 'Direct Paid') return 'bg-green-500 text-white';
     if (name === 'Looking for rider') return 'bg-yellow-500 text-white';
     return 'bg-red-500 text-white';
   };

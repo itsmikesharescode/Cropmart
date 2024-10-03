@@ -185,6 +185,7 @@ const HomeScreen = () => {
               <Text className="font-psemibold text-[20px] text-primary">Products</Text>
             </View>
           )}
+          contentContainerStyle={{ paddingBottom: 20 }}
         />
       </View>
     </SafeAreaView>

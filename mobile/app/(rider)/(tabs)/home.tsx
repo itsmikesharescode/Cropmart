@@ -36,6 +36,13 @@ const ProcessingSnippet: React.FC<RiderLayoutQ['processings'][number]> = (transa
           </Text>
         </View>
 
+        <View className="flex-row gap-[10px] flex-wrap absolute bottom-[82px] left-3">
+          <Text className="font-psemibold text-[15px] px-5 bg-secondary/80">
+            Created At: {new Date(transaction.created_at).toLocaleDateString()} @{' '}
+            {new Date(transaction.created_at).toLocaleTimeString()}
+          </Text>
+        </View>
+
         <View className="flex-row gap-[10px] flex-wrap absolute bottom-3 left-3">
           <Text className="font-psemibold text-[15px] px-5 bg-secondary/80">
             Price: ₱ {transaction.product_obj.price.toLocaleString()}

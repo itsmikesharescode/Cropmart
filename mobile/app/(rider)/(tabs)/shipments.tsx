@@ -63,26 +63,24 @@ const StatusScreen = () => {
   const status = useStatusSelector((state) => state.status);
 
   return (
-    <SafeAreaView className="bg-secondary flex-1">
-      <View className="px-4 pt-4 items-start mt-10">
+    <SafeAreaView className="bg-secondary-200/50 h-full">
+      <View className="pt-10 px-[10px] items-start">
         <Text className="text-[18px] font-psemibold">Shipments</Text>
       </View>
 
-      <View className="">
-        <FlatList
-          contentContainerStyle={{ paddingVertical: 20, paddingHorizontal: 20 }}
-          className="flex-col w-full"
-          showsVerticalScrollIndicator={false}
-          data={status}
-          keyExtractor={(item) => String(item.id)}
-          renderItem={({ item }) => <StatusSnippet {...item} />}
-          ListEmptyComponent={() => (
-            <View className="p-[15px]">
-              <Text className="font-pregular text-base text-center ">No records</Text>
-            </View>
-          )}
-        />
-      </View>
+      <FlatList
+        contentContainerStyle={{ paddingVertical: 20, paddingHorizontal: 20 }}
+        className="flex-col w-full"
+        showsVerticalScrollIndicator={false}
+        data={status}
+        keyExtractor={(item) => String(item.id)}
+        renderItem={({ item }) => <StatusSnippet {...item} />}
+        ListEmptyComponent={() => (
+          <View className="p-[15px]">
+            <Text className="font-pregular text-base text-center ">No records</Text>
+          </View>
+        )}
+      />
     </SafeAreaView>
   );
 };

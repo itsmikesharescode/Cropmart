@@ -170,7 +170,6 @@ const ProductSnippet: React.FC<EntrepLayoutQ['products'][number]> = (product) =>
 
 const HomeScreen = () => {
   const products = useProductsSelector((state) => state.products);
-
   return (
     <SafeAreaView className="flex-1 bg-secondary-100">
       <View className="flex flex-1 h-full justify-center px-[10px] gap-[20px]">

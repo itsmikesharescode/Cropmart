@@ -154,6 +154,7 @@ const ProductSearch = () => {
             </Text>
           </View>
         )}
+        contentContainerStyle={{ paddingBottom: 20 }}
       />
     </SafeAreaView>
   );

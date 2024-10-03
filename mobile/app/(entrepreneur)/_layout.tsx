@@ -78,6 +78,7 @@ const EntrepreneurLayoutScreen = () => {
       <Stack.Screen name="(cart-checkout)" options={{ headerShown: false }} />
       <Stack.Screen name="(profile-settings)" options={{ headerShown: false }} />
       <Stack.Screen name="(profile-transactions)" options={{ headerShown: false }} />
+      <Stack.Screen name="/search/[query]" options={{ headerShown: false }} />
     </Stack>
   );
 };

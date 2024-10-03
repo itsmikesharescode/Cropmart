@@ -62,7 +62,6 @@ const RootLayout = () => {
       <Stack.Screen name="(farmer)" options={{ headerShown: false }} />
       <Stack.Screen name="(entrepreneur)" options={{ headerShown: false }} />
       <Stack.Screen name="(rider)" options={{ headerShown: false }} />
-      <Stack.Screen name="search/[query]" options={{ headerShown: false }} />
     </Stack>
   );
 };

@@ -35,12 +35,12 @@ const SearchInput: React.FC<SearchInput> = ({ initialQuery, placeholder, onBlur 
           onPress={() => {
             if (!query)
               return Alert.alert(
-                'Missing Query',
-                'Please input something to search results across database.'
+                'Missing Inputs',
+                'Please input something to search results products.'
               );
 
-            if (pathName.startsWith('/search')) router.setParams({ query });
-            else router.push(`/search/${query}`);
+            if (pathName.startsWith('/(entrepreneur)/products-search')) router.setParams({ query });
+            else router.push(`/(entrepreneur)/products-search/${query}`);
           }}
           className="p-2 rounded-full"
         >

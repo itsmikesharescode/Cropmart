@@ -1,12 +1,4 @@
-import {
-  FlatList,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  ToastAndroid,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import { FlatList, SafeAreaView, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import CustomButton from '@/components/CustomButton';
 import { Link, router } from 'expo-router';
@@ -112,5 +104,3 @@ const CheckoutScreen = () => {
 };
 
 export default CheckoutScreen;
-
-const styles = StyleSheet.create({});

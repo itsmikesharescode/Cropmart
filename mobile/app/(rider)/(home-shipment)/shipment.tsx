@@ -8,6 +8,9 @@ import CustomButton from '@/components/CustomButton';
 import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useUserSelector } from '@/store/useUser';
+import { PostgrestSingleResponse } from '@supabase/supabase-js';
+import { ProcessingType } from '@/lib/db_types/processing.types';
+import { useStatusSelector } from '../_store/statusStore';
 
 const ShipmentScreen = () => {
   const userState = useUserSelector((state) => state.userState);
@@ -15,6 +18,8 @@ const ShipmentScreen = () => {
   const processing = useProcessingsSelector((state) => state.processing);
   const resetProcessing = useProcessingsSelector((state) => state.resetProcessing);
   const deleteProcessing = useProcessingsSelector((state) => state.deleteProcessing);
+
+  const setStatus = useStatusSelector((state) => state.setStatus);
 
   const handleBackHome = () => {
     resetProcessing();
@@ -39,20 +44,15 @@ const ShipmentScreen = () => {
           onPress: async () => {
             setLoader(true);
 
-            const { error } = await supabase
-              .from('processing_list_tb')
-              .update([
-                {
-                  status: 'On-going',
-                  rider_user_id: userState.id
-                }
-              ])
-              .eq('id', processing.id);
+            const { data, error } = (await supabase.rpc('take_shipment', {
+              process_id_input: processing.id
+            })) as PostgrestSingleResponse<ProcessingType[]>;
             if (error) {
               ToastAndroid.show(error.message, ToastAndroid.LONG);
               setLoader(false);
               return;
             }
+            setStatus(data);
             ToastAndroid.show('Shipment saved.', ToastAndroid.LONG);
             deleteProcessing(processing.id);
             setLoader(false);

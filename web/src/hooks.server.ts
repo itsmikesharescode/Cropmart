@@ -60,12 +60,27 @@ const authGuard: Handle = async ({ event, resolve }) => {
 	event.locals.session = session;
 	event.locals.user = user;
 
-	if (!event.locals.session && event.url.pathname.startsWith('/private')) {
-		redirect(303, '/auth');
+	const path = event.url.pathname;
+
+	const adminPaths = ['/admin', '/admin/products', '/admin/categories', '/admin/users'];
+
+	if (!user && adminPaths.includes(path)) {
+		redirect(303, '/?error=not-authorized');
 	}
 
-	if (event.locals.session && event.url.pathname === '/auth') {
-		redirect(303, '/private');
+	if (user) {
+		const { role } = user.user_metadata;
+		if (role !== 'Admin') {
+			await event.locals.supabaseAdmin.auth.signOut();
+			redirect(303, '/?error=not-authorized');
+		}
+	}
+
+	if (user && path === '/') {
+		const { role } = user.user_metadata;
+		if (role === 'Admin') {
+			redirect(303, '/admin');
+		}
 	}
 
 	return resolve(event);

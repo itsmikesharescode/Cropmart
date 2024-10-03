@@ -13,6 +13,7 @@
 	import { onMount } from 'svelte';
 	import { onNavigate } from '$app/navigation';
 	import { Toaster } from '$lib/components/ui/sonner';
+	import { fromSupabaseState, initSupabase } from '$lib/states/supabaseState.svelte';
 	const { data: layoutSB, children } = $props();
 
 	onMount(() => {
@@ -34,6 +35,13 @@
 				await navigation.complete;
 			});
 		});
+	});
+
+	initSupabase();
+	const supabase = fromSupabaseState();
+
+	$effect(() => {
+		supabase.set(layoutSB.supabase ?? null);
 	});
 </script>
 

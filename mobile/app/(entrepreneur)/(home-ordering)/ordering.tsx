@@ -126,6 +126,8 @@ const OrderingScreen = () => {
                   {product.user_meta_data.lastName}, {product.user_meta_data.firstName}
                 </Text>
                 <Text className="font-pregular text-xs">{product.user_meta_data.email}</Text>
+                <Text className="font-pregular text-xs">{product.user_meta_data.mobileNumber}</Text>
+                <Text className="font-pregular text-xs">{product.user_meta_data.address}</Text>
               </View>
             </View>
 

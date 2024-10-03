@@ -7,9 +7,11 @@ import {
   TouchableOpacity,
   Alert,
   ToastAndroid,
-  ActivityIndicator
+  ActivityIndicator,
+  TextInput
 } from 'react-native';
 import Feather from '@expo/vector-icons/Feather';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { Link, router } from 'expo-router';
 import { EntrepLayoutQ } from '@/lib/db_types/entrepLayoutQ.types';
 import { useProductsSelector } from '../_store/productStore';
@@ -20,10 +22,27 @@ import { PostgrestSingleResponse } from '@supabase/supabase-js';
 import { useState } from 'react';
 import { useBookmarksSelector } from '../_store/bookmarkStore';
 
+const SearchSnippet = () => {
+  return (
+    <View className="px-2">
+      <View className="w-full flex-row h-16 px-4 bg-secondary-200  rounded-2xl focus:border-primary focus:border-2 items-center">
+        <TextInput
+          className="flex-1 font-psemibold text-base"
+          placeholder="Search product name"
+          placeholderTextColor="#7b7b8b"
+        />
+        <TouchableOpacity className="p-2 rounded-full">
+          <FontAwesome5 name="search" size={24} color="#91B43F" />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
 const CategorySnippet = () => {
   const categories = useCategorySelector((state) => state.categories);
   return (
-    <View className="px-2">
+    <View className="px-2 mt-5">
       <View className="">
         <Text className="font-psemibold text-[20px] text-primary">Categories</Text>
       </View>
@@ -178,7 +197,7 @@ const HomeScreen = () => {
           renderItem={({ item }) => <ProductSnippet {...item} />}
           ListHeaderComponent={() => (
             <View className="gap-2 mt-16">
-              {/*  <FarmerSnippet /> */}
+              <SearchSnippet />
               <CategorySnippet />
               <Text className="font-psemibold text-[20px] text-primary">Products</Text>
             </View>

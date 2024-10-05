@@ -3,12 +3,15 @@
   import type { Infer, SuperValidated } from 'sveltekit-superforms';
   import Menu from './Menu.svelte';
   import type { UpdateProductSchema } from './operations/schema';
+  import { fromProductState } from '../../_route_states/prodRoute.svelte';
 
   interface Props {
     updateProductForm: SuperValidated<Infer<UpdateProductSchema>>;
   }
 
   const { updateProductForm }: Props = $props();
+
+  const productState = fromProductState();
 </script>
 
 <Table.Root>
@@ -27,7 +30,7 @@
     </Table.Row>
   </Table.Header>
   <Table.Body>
-    {#each Array(10) as _, index}
+    {#each productState.getProucts() ?? [] as product, index}
       <Table.Row>
         <Table.Cell class="">
           <div class="flex items-center">
@@ -37,14 +40,22 @@
         <Table.Cell class="text-xs text-primary/90">
           {index + 1}
         </Table.Cell>
-        <Table.Cell class="truncate text-xs text-primary/90"
-          >{new Date().toLocaleDateString()}</Table.Cell
+        <Table.Cell class="truncate text-xs text-primary/90">
+          {new Date(product.created_at).toLocaleDateString()} @ {new Date(
+            product.created_at
+          ).toLocaleTimeString()}
+        </Table.Cell>
+        <Table.Cell class="text-xs text-primary/90 "
+          >{product.user_meta_data.lastName}, {product.user_meta_data.firstName}</Table.Cell
         >
-        <Table.Cell class="text-xs text-primary/90 ">Mike John Eviota</Table.Cell>
-        <Table.Cell class="text-xs text-primary/90 ">Potatoes</Table.Cell>
-        <Table.Cell class="truncate text-xs text-primary/90">₱ 70/Kg</Table.Cell>
-        <Table.Cell class="truncate text-xs text-primary/90">1,800 Kilos</Table.Cell>
-        <Table.Cell class="truncate text-xs text-primary/90">Crops</Table.Cell>
+        <Table.Cell class="text-xs text-primary/90 ">{product.name}</Table.Cell>
+        <Table.Cell class="truncate text-xs text-primary/90"
+          >₱{product.price.toLocaleString()}/Kg</Table.Cell
+        >
+        <Table.Cell class="truncate text-xs text-primary/90"
+          >{product.quantity.toLocaleString()} Kilos</Table.Cell
+        >
+        <Table.Cell class="truncate text-xs text-primary/90">{product.category}</Table.Cell>
         <Table.Cell class="text-xs text-primary/90">
           <div class="h-[50px] w-[50px] rounded-lg bg-red-500"></div>
         </Table.Cell>

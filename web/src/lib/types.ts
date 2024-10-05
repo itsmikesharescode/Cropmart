@@ -18,6 +18,10 @@ export interface UserMetaDataType {
   phone_verified: boolean;
 }
 
+interface ProductView extends ProductType {
+  user_meta_data: UserMetaDataType;
+}
+
 export interface AdminLayoutQ {
-  products: (ProductType & { user_meta_data: UserMetaDataType }[]) | [];
+  products: ProductView[] | [];
 }

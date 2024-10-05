@@ -4,6 +4,7 @@
   import Menu from './Menu.svelte';
   import type { UpdateProductSchema } from './operations/schema';
   import { fromProductState } from '../../_route_states/prodRoute.svelte';
+  import * as Avatar from '$lib/components/ui/avatar';
 
   interface Props {
     updateProductForm: SuperValidated<Infer<UpdateProductSchema>>;
@@ -57,7 +58,12 @@
         >
         <Table.Cell class="truncate text-xs text-primary/90">{product.category}</Table.Cell>
         <Table.Cell class="text-xs text-primary/90">
-          <div class="h-[50px] w-[50px] rounded-lg bg-red-500"></div>
+          <div class="">
+            <Avatar.Root class="h-[50px] w-[50px] rounded-lg">
+              <Avatar.Image src={product.img_link} alt="@loading" />
+              <Avatar.Fallback>CN</Avatar.Fallback>
+            </Avatar.Root>
+          </div>
         </Table.Cell>
       </Table.Row>
     {/each}

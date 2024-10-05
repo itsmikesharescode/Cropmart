@@ -17,7 +17,8 @@
   let { updateSignal = $bindable(), updateProductForm }: Props = $props();
 
   const form = superForm(updateProductForm, {
-    validators: zodClient(updateProductSchema)
+    validators: zodClient(updateProductSchema),
+    id: crypto.randomUUID()
   });
 
   const { form: formData, enhance, submitting } = form;
@@ -27,7 +28,10 @@
   <AlertDialog.Root bind:open={updateSignal}>
     <AlertDialog.Content>
       <button
-        onclick={() => (updateSignal = false)}
+        onclick={() => {
+          updateSignal = false;
+          form.reset();
+        }}
         class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-red-500 data-[state=open]:text-red-500"
       >
         <X class="h-4 w-4 text-primary " />

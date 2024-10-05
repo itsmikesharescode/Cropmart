@@ -4,6 +4,7 @@
   import type { Infer, SuperValidated } from 'sveltekit-superforms';
   import UpdateCategory from './operations/UpdateCategory.svelte';
   import type { UpdateCatSchema } from './operations/schema';
+  import DeleteCategory from './operations/DeleteCategory.svelte';
 
   interface Props {
     updateCatForm: SuperValidated<Infer<UpdateCatSchema>>;
@@ -38,3 +39,4 @@
 </DropdownMenu.Root>
 
 <UpdateCategory bind:updateSignal {updateCatForm} />
+<DeleteCategory bind:deleteSignal />

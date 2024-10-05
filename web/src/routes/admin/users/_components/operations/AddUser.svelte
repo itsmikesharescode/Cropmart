@@ -48,7 +48,7 @@
       <X class="h-4 w-4 text-primary " />
       <span class="sr-only">Close</span>
     </button>
-    <AlertDialog.Header class="px-10 pt-10">
+    <AlertDialog.Header class="px-6 pt-6">
       <AlertDialog.Title class="text-primary">Create Account</AlertDialog.Title>
       <AlertDialog.Description class="text-primary/90">
         Kindy provide all the information needed to create an account.
@@ -57,7 +57,7 @@
 
     <form method="POST" action="?/createUserEvent" use:enhance>
       <ScrollArea class="h-[50dvh]  pb-2.5">
-        <div class="px-10">
+        <div class="px-6">
           <Form.Field {form} name="role">
             <Form.Control let:attrs>
               <Form.Label class="text-primary">Role</Form.Label>
@@ -159,7 +159,7 @@
           </Form.Field>
         </div>
       </ScrollArea>
-      <AlertDialog.Footer class="px-10 pb-10">
+      <AlertDialog.Footer class="px-6 pb-6">
         <Form.Button>Create</Form.Button>
       </AlertDialog.Footer>
     </form>

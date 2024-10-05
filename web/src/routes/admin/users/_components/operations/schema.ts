@@ -67,4 +67,4 @@ export const updateUserPwdSchema = z
     }
   });
 
-export const UpdateUserPwdSchema = typeof updateUserPwdSchema;
+export type UpdateUserPwdSchema = typeof updateUserPwdSchema;

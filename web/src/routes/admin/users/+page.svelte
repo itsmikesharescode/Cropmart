@@ -15,6 +15,7 @@
     <RenderUsers
       updateUserInfoForm={data.updateUserInfoForm}
       updateUserEmailForm={data.updateUserEmailForm}
+      updateUserPwdForm={data.updateUserPwdForm}
     />
   </div>
 

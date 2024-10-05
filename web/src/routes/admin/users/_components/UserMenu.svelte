@@ -6,18 +6,25 @@
   import * as Menubar from '$lib/components/ui/menubar';
   import Label from '$lib/components/ui/label/label.svelte';
   import UpdateUserEmail from './operations/update_user/UpdateUserEmail.svelte';
-  import type { UpdateUserEmailSchema, UpdateUserInfoSchema } from './operations/schema';
+  import type {
+    UpdateUserEmailSchema,
+    UpdateUserInfoSchema,
+    UpdateUserPwdSchema
+  } from './operations/schema';
   import UpdateUserInfo from './operations/update_user/UpdateUserInfo.svelte';
+  import UpdateUserPassword from './operations/update_user/UpdateUserPassword.svelte';
 
   interface Props {
-    updateUserEmailForm: SuperValidated<Infer<UpdateUserEmailSchema>>;
     updateUserInfoForm: SuperValidated<Infer<UpdateUserInfoSchema>>;
+    updateUserEmailForm: SuperValidated<Infer<UpdateUserEmailSchema>>;
+    updateUserPwdForm: SuperValidated<Infer<UpdateUserPwdSchema>>;
   }
 
-  const { updateUserEmailForm, updateUserInfoForm }: Props = $props();
+  const { updateUserInfoForm, updateUserEmailForm, updateUserPwdForm }: Props = $props();
 
   let updateInfoSignal = $state(false);
   let updateEmailSignal = $state(false);
+  let updatePwdSignal = $state(false);
   let deleteSignal = $state(false);
 
   let open = $state(false);
@@ -48,6 +55,7 @@
             >Update Email</Menubar.Item
           >
           <Menubar.Item
+            onclick={() => (updatePwdSignal = true)}
             class="text-primary data-[highlighted]:bg-primary/50 data-[state=open]:bg-primary/50 data-[highlighted]:text-white data-[state=open]:text-white"
             >Update Password</Menubar.Item
           >
@@ -64,4 +72,5 @@
 
 <UpdateUserInfo bind:updateInfoSignal {updateUserInfoForm} />
 <UpdateUserEmail bind:updateEmailSignal {updateUserEmailForm} />
+<UpdateUserPassword bind:updatePwdSignal {updateUserPwdForm} />
 <DeleteUser bind:deleteSignal />

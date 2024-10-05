@@ -26,6 +26,7 @@
 <AlertDialog.Root bind:open={updateInfoSignal}>
   <AlertDialog.Content>
     <button
+      type="button"
       onclick={() => {
         updateInfoSignal = false;
         form.reset();
@@ -53,7 +54,7 @@
       <Form.Field {form} name="newFname">
         <Form.Control let:attrs>
           <Form.Label class="text-primary">New First Name</Form.Label>
-          <Input {...attrs} bind:value={$formData.newFname} />
+          <Input {...attrs} bind:value={$formData.newFname} placeholder="Enter new first name" />
         </Form.Control>
 
         <Form.FieldErrors />
@@ -61,7 +62,7 @@
       <Form.Field {form} name="newLname">
         <Form.Control let:attrs>
           <Form.Label class="text-primary">New Last Name</Form.Label>
-          <Input {...attrs} bind:value={$formData.newLname} />
+          <Input {...attrs} bind:value={$formData.newLname} placeholder="Enter new last name" />
         </Form.Control>
 
         <Form.FieldErrors />
@@ -69,7 +70,7 @@
       <Form.Field {form} name="newAddress">
         <Form.Control let:attrs>
           <Form.Label class="text-primary">New Address</Form.Label>
-          <Input {...attrs} bind:value={$formData.newAddress} />
+          <Input {...attrs} bind:value={$formData.newAddress} placeholder="Enter new address" />
         </Form.Control>
 
         <Form.FieldErrors />
@@ -77,7 +78,11 @@
       <Form.Field {form} name="newMobileNum">
         <Form.Control let:attrs>
           <Form.Label class="text-primary">New Mobile Number</Form.Label>
-          <Input {...attrs} bind:value={$formData.newMobileNum} />
+          <Input
+            {...attrs}
+            bind:value={$formData.newMobileNum}
+            placeholder="Enter new mobile number"
+          />
         </Form.Control>
 
         <Form.FieldErrors />

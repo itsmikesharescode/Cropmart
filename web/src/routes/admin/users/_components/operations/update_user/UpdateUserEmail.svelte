@@ -26,6 +26,7 @@
 <AlertDialog.Root bind:open={updateEmailSignal}>
   <AlertDialog.Content>
     <button
+      type="button"
       onclick={() => {
         updateEmailSignal = false;
         form.reset();
@@ -46,7 +47,7 @@
       <Form.Field {form} name="newEmail">
         <Form.Control let:attrs>
           <Form.Label class="text-primary">New Email</Form.Label>
-          <Input {...attrs} bind:value={$formData.newEmail} />
+          <Input {...attrs} bind:value={$formData.newEmail} placeholder="Enter new email" />
         </Form.Control>
 
         <Form.FieldErrors />

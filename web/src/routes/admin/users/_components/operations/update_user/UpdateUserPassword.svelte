@@ -25,6 +25,7 @@
 <AlertDialog.Root bind:open={updatePwdSignal}>
   <AlertDialog.Content>
     <button
+      type="button"
       onclick={() => {
         updatePwdSignal = false;
         form.reset();
@@ -45,7 +46,12 @@
       <Form.Field {form} name="newPwd">
         <Form.Control let:attrs>
           <Form.Label class="text-primary">New Password</Form.Label>
-          <Input type="password" {...attrs} bind:value={$formData.newPwd} />
+          <Input
+            type="password"
+            {...attrs}
+            bind:value={$formData.newPwd}
+            placeholder="Enter new password"
+          />
         </Form.Control>
 
         <Form.FieldErrors />
@@ -54,7 +60,12 @@
       <Form.Field {form} name="confirmNewPwd">
         <Form.Control let:attrs>
           <Form.Label class="text-primary">Confirm New Password</Form.Label>
-          <Input type="password" {...attrs} bind:value={$formData.confirmNewPwd} />
+          <Input
+            type="password"
+            {...attrs}
+            bind:value={$formData.confirmNewPwd}
+            placeholder="Confirm new password"
+          />
         </Form.Control>
 
         <Form.FieldErrors />

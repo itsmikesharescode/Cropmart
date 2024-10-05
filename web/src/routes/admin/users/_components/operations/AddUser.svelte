@@ -38,6 +38,7 @@
 <AlertDialog.Root bind:open>
   <AlertDialog.Content class="p-0">
     <button
+      type="button"
       onclick={() => {
         open = false;
         form.reset();

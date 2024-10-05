@@ -2,13 +2,14 @@
   import * as Table from '$lib/components/ui/table';
   import type { Infer, SuperValidated } from 'sveltekit-superforms';
   import UserMenu from './UserMenu.svelte';
-  import type { UpdateUserEmailSchema } from './operations/schema';
+  import type { UpdateUserEmailSchema, UpdateUserInfoSchema } from './operations/schema';
 
   interface Props {
     updateUserEmailForm: SuperValidated<Infer<UpdateUserEmailSchema>>;
+    updateUserInfoForm: SuperValidated<Infer<UpdateUserInfoSchema>>;
   }
 
-  const { updateUserEmailForm }: Props = $props();
+  const { updateUserEmailForm, updateUserInfoForm }: Props = $props();
 </script>
 
 <Table.Root>
@@ -31,7 +32,7 @@
       <Table.Row>
         <Table.Cell class="font-medium">
           <div class="flex items-center">
-            <UserMenu {updateUserEmailForm} />
+            <UserMenu {updateUserEmailForm} {updateUserInfoForm} />
           </div>
         </Table.Cell>
         <Table.Cell class="text-xs text-primary/90">{index + 1}</Table.Cell>

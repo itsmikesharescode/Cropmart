@@ -12,7 +12,10 @@
 </div> -->
 <ScrollArea class="w-[900px]" orientation="horizontal">
   <div class="p-4">
-    <RenderUsers updateUserEmailForm={data.updateUserEmailForm} />
+    <RenderUsers
+      updateUserInfoForm={data.updateUserInfoForm}
+      updateUserEmailForm={data.updateUserEmailForm}
+    />
   </div>
 
   <div class="fixed bottom-6 right-0 w-full">

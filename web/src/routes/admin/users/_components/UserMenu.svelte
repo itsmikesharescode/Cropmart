@@ -6,14 +6,17 @@
   import * as Menubar from '$lib/components/ui/menubar';
   import Label from '$lib/components/ui/label/label.svelte';
   import UpdateUserEmail from './operations/update_user/UpdateUserEmail.svelte';
-  import type { UpdateUserEmailSchema } from './operations/schema';
+  import type { UpdateUserEmailSchema, UpdateUserInfoSchema } from './operations/schema';
+  import UpdateUserInfo from './operations/update_user/UpdateUserInfo.svelte';
 
   interface Props {
     updateUserEmailForm: SuperValidated<Infer<UpdateUserEmailSchema>>;
+    updateUserInfoForm: SuperValidated<Infer<UpdateUserInfoSchema>>;
   }
 
-  const { updateUserEmailForm }: Props = $props();
+  const { updateUserEmailForm, updateUserInfoForm }: Props = $props();
 
+  let updateInfoSignal = $state(false);
   let updateEmailSignal = $state(false);
   let deleteSignal = $state(false);
 
@@ -35,6 +38,7 @@
         >
         <Menubar.SubContent>
           <Menubar.Item
+            onclick={() => (updateInfoSignal = true)}
             class="text-primary data-[highlighted]:bg-primary/50 data-[state=open]:bg-primary/50 data-[highlighted]:text-white data-[state=open]:text-white"
             >Update Information</Menubar.Item
           >
@@ -58,5 +62,6 @@
   </Menubar.Menu>
 </Menubar.Root>
 
+<UpdateUserInfo bind:updateInfoSignal {updateUserInfoForm} />
 <UpdateUserEmail bind:updateEmailSignal {updateUserEmailForm} />
 <DeleteUser bind:deleteSignal />

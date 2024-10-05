@@ -2,6 +2,7 @@
   import Nav from './_components/Nav.svelte';
 
   const { data, children } = $props();
+  console.log(data.adminLayoutQ);
 </script>
 
 <div class="mx-auto max-w-[1200px]">

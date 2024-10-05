@@ -7,6 +7,7 @@
   import * as Form from '$lib/components/ui/form';
   import { Input } from '$lib/components/ui/input';
   import { createCatSchema, type CreateCatSchema } from './schema';
+  import ImgUploader from '$lib/components/general/ImgUploader.svelte';
 
   interface Props {
     createCategoryForm: SuperValidated<Infer<CreateCatSchema>>;
@@ -48,11 +49,19 @@
       </AlertDialog.Description>
     </AlertDialog.Header>
 
-    <form method="POST" use:enhance>
-      <Form.Field {form} name="name">
+    <form method="POST" enctype="multipart/form-data" action="?/createCategoryEvent" use:enhance>
+      <Form.Field {form} name="catPhoto">
+        <Form.Control let:attrs>
+          <Form.Label class="text-primary">Category Photo</Form.Label>
+          <ImgUploader hasLink="" {attrs} bind:file={$formData.catPhoto} />
+        </Form.Control>
+        <Form.FieldErrors />
+      </Form.Field>
+
+      <Form.Field {form} name="catName">
         <Form.Control let:attrs>
           <Form.Label class="text-primary">Category Name</Form.Label>
-          <Input {...attrs} bind:value={$formData.name} />
+          <Input {...attrs} bind:value={$formData.catName} />
         </Form.Control>
 
         <Form.FieldErrors />

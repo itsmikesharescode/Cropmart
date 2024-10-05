@@ -41,12 +41,12 @@
   {#if previewUrl}
     <img src={previewUrl} alt="" class="h-[150px] w-full" />
   {:else if hasLink}
-    <img src="" alt="churchImg" class="h-[150px] w-full" />
+    <img src={hasLink} alt="churchImg" class="h-[150px] w-full" />
   {:else}
-    <ImageUp class="h-[150px] w-[100px]" />
+    <ImageUp class="h-[150px] w-[100px] text-primary" />
   {/if}
 
-  <span class="text-sm text-muted-foreground">Upload Church Photo</span>
+  <span class="text-sm text-primary">Upload Church Photo</span>
   <input
     {...attrs}
     type="file"

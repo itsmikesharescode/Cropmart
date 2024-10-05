@@ -54,8 +54,8 @@
       </AlertDialog.Description>
     </AlertDialog.Header>
 
-    <form method="POST" action="?/createCategoryEvent" use:enhance>
-      <ScrollArea class="max-h-[70dvh] w-full">
+    <form method="POST" action="?/createUserEvent" use:enhance>
+      <ScrollArea class="h-[50dvh]  pb-2.5">
         <div class="px-10">
           <Form.Field {form} name="role">
             <Form.Control let:attrs>
@@ -83,7 +83,7 @@
           <Form.Field {form} name="email">
             <Form.Control let:attrs>
               <Form.Label class="text-primary">Email</Form.Label>
-              <Input {...attrs} bind:value={$formData.email} />
+              <Input {...attrs} bind:value={$formData.email} placeholder="Enter email" />
             </Form.Control>
 
             <Form.FieldErrors />
@@ -92,7 +92,7 @@
           <Form.Field {form} name="fName">
             <Form.Control let:attrs>
               <Form.Label class="text-primary">First Name</Form.Label>
-              <Input {...attrs} bind:value={$formData.fName} />
+              <Input {...attrs} bind:value={$formData.fName} placeholder="Enter first name" />
             </Form.Control>
 
             <Form.FieldErrors />
@@ -101,7 +101,57 @@
           <Form.Field {form} name="lName">
             <Form.Control let:attrs>
               <Form.Label class="text-primary">Last Name</Form.Label>
-              <Input {...attrs} bind:value={$formData.lName} />
+              <Input {...attrs} bind:value={$formData.lName} placeholder="Enter last name" />
+            </Form.Control>
+
+            <Form.FieldErrors />
+          </Form.Field>
+
+          <Form.Field {form} name="address">
+            <Form.Control let:attrs>
+              <Form.Label class="text-primary">Address</Form.Label>
+              <Input {...attrs} bind:value={$formData.address} placeholder="Enter address" />
+            </Form.Control>
+
+            <Form.FieldErrors />
+          </Form.Field>
+
+          <Form.Field {form} name="mobileNum">
+            <Form.Control let:attrs>
+              <Form.Label class="text-primary">Mobile Number</Form.Label>
+              <Input
+                {...attrs}
+                bind:value={$formData.mobileNum}
+                placeholder="Enter mobile number"
+              />
+            </Form.Control>
+
+            <Form.FieldErrors />
+          </Form.Field>
+
+          <Form.Field {form} name="pwd">
+            <Form.Control let:attrs>
+              <Form.Label class="text-primary">Password</Form.Label>
+              <Input
+                type="password"
+                {...attrs}
+                bind:value={$formData.pwd}
+                placeholder="Enter password"
+              />
+            </Form.Control>
+
+            <Form.FieldErrors />
+          </Form.Field>
+
+          <Form.Field {form} name="confirmPwd">
+            <Form.Control let:attrs>
+              <Form.Label class="text-primary">Confirm Password</Form.Label>
+              <Input
+                type="password"
+                {...attrs}
+                bind:value={$formData.confirmPwd}
+                placeholder="Confirm password"
+              />
             </Form.Control>
 
             <Form.FieldErrors />

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 const roles = ['Rider', 'Farmer', 'Entrepreneur'];
+const mobileNumberRegex = /^\+\d{11,14}$/;
 
 export const createUserSchema = z
   .object({
@@ -11,7 +12,9 @@ export const createUserSchema = z
     fName: z.string().min(1, { message: 'Must enter a first name.' }),
     lName: z.string().min(1, { message: 'Must enter a last name.' }),
     address: z.string().min(1, { message: 'Must enter an address.' }),
-    mobileNum: z.string().min(1, { message: 'Must enter a mobile number.' }),
+    mobileNum: z.string().regex(mobileNumberRegex, {
+      message: 'Must enter a valid mobile number e.g., +639123458272.'
+    }),
     pwd: z.string().min(1, { message: 'Must enter a strong password.' }),
     confirmPwd: z.string()
   })
@@ -28,15 +31,13 @@ export const createUserSchema = z
 export type CreateUserSchema = typeof createUserSchema;
 
 // for update user info
-const mobileNumberRegex = /^\+\d{11,14}$/;
-
 export const updateUserInfoSchema = z.object({
   userId: z.string(),
   newFname: z.string().min(1, { message: 'Must enter a new first name.' }),
   newLname: z.string().min(1, { message: 'Must enter a new last name.' }),
   newAddress: z.string().min(1, { message: 'Must enter a new address.' }),
   newMobileNum: z.string().regex(mobileNumberRegex, {
-    message: 'Must enter a valid mobile number in international format, e.g., +639123458272.'
+    message: 'Must enter a valid mobile number e.g., +639123458272.'
   })
 });
 

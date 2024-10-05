@@ -33,13 +33,13 @@
 <AlertDialog.Root bind:open>
   <AlertDialog.Content>
     <AlertDialog.Header>
-      <AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
-      <AlertDialog.Description>
+      <AlertDialog.Title class="text-primary">Are you absolutely sure?</AlertDialog.Title>
+      <AlertDialog.Description class="text-primary">
         You are about to log out of the <strong>Crop Mart Management Portal.</strong>
       </AlertDialog.Description>
     </AlertDialog.Header>
     <AlertDialog.Footer>
-      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+      <AlertDialog.Cancel class="text-primary hover:text-primary">Cancel</AlertDialog.Cancel>
       <Button disabled={loader} onclick={handleLogout} class="relative">
         {#if loader}
           <div

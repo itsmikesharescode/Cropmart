@@ -8,7 +8,7 @@
 
 <ScrollArea class="w-[900px]" orientation="horizontal">
   <div class="p-4">
-    <RenderCategories />
+    <RenderCategories updateCatForm={data.upateCatForm} />
   </div>
 
   <div class="fixed bottom-6 right-0 w-full">

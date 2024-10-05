@@ -2,6 +2,14 @@
   import { AlignJustify } from 'lucide-svelte';
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
   import type { Infer, SuperValidated } from 'sveltekit-superforms';
+  import UpdateCategory from './operations/UpdateCategory.svelte';
+  import type { UpdateCatSchema } from './operations/schema';
+
+  interface Props {
+    updateCatForm: SuperValidated<Infer<UpdateCatSchema>>;
+  }
+
+  const { updateCatForm }: Props = $props();
 
   let updateSignal = $state(false);
   let deleteSignal = $state(false);
@@ -28,3 +36,5 @@
     </DropdownMenu.Group>
   </DropdownMenu.Content>
 </DropdownMenu.Root>
+
+<UpdateCategory bind:updateSignal {updateCatForm} />

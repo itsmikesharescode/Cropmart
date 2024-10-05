@@ -1,6 +1,14 @@
 <script lang="ts">
   import * as Table from '$lib/components/ui/table';
+  import type { Infer, SuperValidated } from 'sveltekit-superforms';
   import CatMenu from './CatMenu.svelte';
+  import type { UpdateCatSchema } from './operations/schema';
+
+  interface Props {
+    updateCatForm: SuperValidated<Infer<UpdateCatSchema>>;
+  }
+
+  const { updateCatForm }: Props = $props();
 </script>
 
 <Table.Root>
@@ -19,7 +27,7 @@
       <Table.Row>
         <Table.Cell class="font-medium">
           <div class="flex items-center">
-            <CatMenu />
+            <CatMenu {updateCatForm} />
           </div>
         </Table.Cell>
         <Table.Cell class="text-xs text-primary/90">{index + 1}</Table.Cell>

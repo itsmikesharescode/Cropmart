@@ -34,6 +34,7 @@
     <button
       onclick={() => {
         open = false;
+        form.reset();
       }}
       class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-red-500 data-[state=open]:text-red-500"
     >
@@ -50,14 +51,14 @@
     <form method="POST" use:enhance>
       <Form.Field {form} name="name">
         <Form.Control let:attrs>
-          <Form.Label class="text-primary">Product Price</Form.Label>
-          <Input type="number" {...attrs} bind:value={$formData.name} />
+          <Form.Label class="text-primary">Category Name</Form.Label>
+          <Input {...attrs} bind:value={$formData.name} />
         </Form.Control>
 
         <Form.FieldErrors />
       </Form.Field>
       <AlertDialog.Footer>
-        <Form.Button>Update</Form.Button>
+        <Form.Button>Create</Form.Button>
       </AlertDialog.Footer>
     </form>
   </AlertDialog.Content>

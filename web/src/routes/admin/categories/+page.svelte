@@ -1,40 +1,21 @@
 <script lang="ts">
-  import * as Table from '$lib/components/ui/table';
-  import { AlignJustify } from 'lucide-svelte';
+  import Button from '$lib/components/ui/button/button.svelte';
   import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
+  import RenderCategories from './_components/RenderCategories.svelte';
+  import { Plus } from 'lucide-svelte';
 </script>
 
 <ScrollArea class="w-[900px]" orientation="horizontal">
   <div class="p-4">
-    <Table.Root>
-      <Table.Caption class="text-primary/80">No records.</Table.Caption>
-      <Table.Header>
-        <Table.Row>
-          <Table.Head class="w-[50px]"></Table.Head>
-          <Table.Head class="w-[50px] text-primary">ID</Table.Head>
-          <Table.Head class="w-full text-primary">Name</Table.Head>
-          <Table.Head class="w-full truncate text-primary">Created At</Table.Head>
-          <Table.Head class="w-full text-primary">Photo</Table.Head>
-        </Table.Row>
-      </Table.Header>
-      <Table.Body>
-        {#each Array(10) as _, index}
-          <Table.Row>
-            <Table.Cell class="font-medium">
-              <AlignJustify class="text-primary/90" />
-            </Table.Cell>
-            <Table.Cell class="text-xs text-primary/90">{index + 1}</Table.Cell>
-            <Table.Cell class="text-xs text-primary/90">Poultry</Table.Cell>
-            <Table.Cell class="text-xs text-primary/90"
-              >{new Date().toLocaleDateString()}</Table.Cell
-            >
+    <RenderCategories />
+  </div>
 
-            <Table.Cell class="text-xs text-primary/90">
-              <div class="h-[50px] w-[50px] rounded-lg bg-red-500"></div>
-            </Table.Cell>
-          </Table.Row>
-        {/each}
-      </Table.Body>
-    </Table.Root>
+  <div class="fixed bottom-6 right-0 w-full">
+    <div class="mx-auto flex max-w-[1200px] justify-end">
+      <Button class="gap-1.5">
+        <Plus class="h-4 w-4" />
+        New Category
+      </Button>
+    </div>
   </div>
 </ScrollArea>

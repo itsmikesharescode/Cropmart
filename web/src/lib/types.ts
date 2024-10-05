@@ -1,3 +1,5 @@
+import type { ProductType } from './db_types/product.types';
+
 export interface Result<T> {
   status: number;
   type: string;
@@ -14,4 +16,8 @@ export interface UserMetaDataType {
   mobileNumber: string;
   email_verified: boolean;
   phone_verified: boolean;
+}
+
+export interface AdminLayoutQ {
+  products: (ProductType & { user_meta_data: UserMetaDataType }[]) | [];
 }

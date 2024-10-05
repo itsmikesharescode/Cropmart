@@ -43,15 +43,15 @@ export const updateUserInfoSchema = z.object({
 export type UpdateUserInfoSchema = typeof updateUserInfoSchema;
 
 // for update user email
-export const updateUserEmail = z.object({
+export const updateUserEmailSchema = z.object({
   userId: z.string(),
   newEmail: z.string().email({ message: 'Must enter a valid email.' })
 });
 
-export type UpdateUserEmail = typeof updateUserEmail;
+export type UpdateUserEmailSchema = typeof updateUserEmailSchema;
 
 // for update user password
-export const updateUserPwd = z
+export const updateUserPwdSchema = z
   .object({
     newPwd: z.string().min(8, { message: 'Must choose a strong password' }),
     confirmNewPwd: z.string()
@@ -65,3 +65,5 @@ export const updateUserPwd = z
       });
     }
   });
+
+export const UpdateUserPwdSchema = typeof updateUserPwdSchema;

@@ -1,5 +1,6 @@
 create or replace function insert_purchase(
-  purchase_obj_input jsonb
+  purchase_obj_input jsonb,
+  purchase_type_input text
 ) returns setof processing_list_tb as $$
 declare
   cart_item jsonb;
@@ -11,18 +12,37 @@ begin
     farmer_user_id_input := (cart_item->>'user_id')::uuid;
     product_id_input := (cart_item->>'id')::bigint;
 
-    insert into processing_list_tb (
-      farmer_user_id, 
-      entrepreneur_user_id, 
-      product_id, 
-      product_obj
-    )
-    values(
-      farmer_user_id_input, 
-      auth.uid(),
-      product_id_input,
-      cart_item
-    );
+    if purchase_type_input = 'direct payment' then
+      insert into processing_list_tb (
+        farmer_user_id, 
+        entrepreneur_user_id, 
+        product_id, 
+        product_obj,
+        status,
+        rider_user_id
+      )
+      values(
+        farmer_user_id_input, 
+        auth.uid(),
+        product_id_input,
+        cart_item,
+        'Direct Paid',
+        auth.uid()
+      );
+    else 
+      insert into processing_list_tb (
+        farmer_user_id, 
+        entrepreneur_user_id, 
+        product_id, 
+        product_obj
+      )
+      values(
+        farmer_user_id_input, 
+        auth.uid(),
+        product_id_input,
+        cart_item
+      );
+    end if;
   end loop;
 
   return query

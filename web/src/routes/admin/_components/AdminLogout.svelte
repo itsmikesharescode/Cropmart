@@ -34,7 +34,7 @@
   <AlertDialog.Content>
     <AlertDialog.Header>
       <AlertDialog.Title class="text-primary">Are you absolutely sure?</AlertDialog.Title>
-      <AlertDialog.Description class="text-primary">
+      <AlertDialog.Description class="text-primary/90">
         You are about to log out of the <strong>Crop Mart Management Portal.</strong>
       </AlertDialog.Description>
     </AlertDialog.Header>

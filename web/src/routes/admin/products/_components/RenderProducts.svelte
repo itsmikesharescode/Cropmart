@@ -1,6 +1,14 @@
 <script lang="ts">
   import * as Table from '$lib/components/ui/table';
+  import type { Infer, SuperValidated } from 'sveltekit-superforms';
   import Menu from './Menu.svelte';
+  import type { UpdateProductSchema } from './operations/schema';
+
+  interface Props {
+    updateProductForm: SuperValidated<Infer<UpdateProductSchema>>;
+  }
+
+  const { updateProductForm }: Props = $props();
 </script>
 
 <Table.Root>
@@ -22,7 +30,7 @@
       <Table.Row>
         <Table.Cell class="">
           <div class="flex items-center">
-            <Menu />
+            <Menu {updateProductForm} />
           </div>
         </Table.Cell>
         <Table.Cell class="text-xs text-primary/90">

@@ -42,13 +42,13 @@ export const actions: Actions = {
 
     const { data: storageRes, error: upsertErr } = await supabase.storage
       .from('category_bucket')
-      .update('', form.data.newCatPhoto, { upsert: true });
-
+      .update(form.data.imgPath, form.data.newCatPhoto, { upsert: true });
     if (upsertErr) return fail(401, withFiles({ form, msg: upsertErr.message }));
 
     const { error: updateErr } = await supabase
       .from('category_list_tb')
-      .update([{ name: form.data.newCatName, img_link: publicAPI + storageRes.fullPath }]);
+      .update([{ name: form.data.newCatName, img_link: publicAPI + storageRes.fullPath }])
+      .eq('name', form.data.newCatName);
 
     if (updateErr) return fail(401, withFiles({ form, msg: updateErr.message }));
   }

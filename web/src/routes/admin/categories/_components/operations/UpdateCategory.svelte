@@ -1,27 +1,54 @@
 <script lang="ts">
   import * as AlertDialog from '$lib/components/ui/alert-dialog';
   import Button from '$lib/components/ui/button/button.svelte';
-  import { Plus, X } from 'lucide-svelte';
+  import { X, Loader } from 'lucide-svelte';
   import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
   import { zodClient } from 'sveltekit-superforms/adapters';
   import * as Form from '$lib/components/ui/form';
   import { Input } from '$lib/components/ui/input';
   import { updateCatSchema, type UpdateCatSchema } from './schema';
   import ImgUploader from '$lib/components/general/ImgUploader.svelte';
+  import type { AdminLayoutQ, Result } from '$lib/types';
+  import { toast } from 'svelte-sonner';
 
   interface Props {
     updateSignal: boolean;
     updateCatForm: SuperValidated<Infer<UpdateCatSchema>>;
+    category: AdminLayoutQ['categories'][number];
   }
 
-  let { updateSignal = $bindable(), updateCatForm }: Props = $props();
+  let { updateSignal = $bindable(), updateCatForm, category }: Props = $props();
 
   const form = superForm(updateCatForm, {
     validators: zodClient(updateCatSchema),
-    id: crypto.randomUUID()
+    id: crypto.randomUUID(),
+    async onUpdate({ result }) {
+      const { status, data } = result as Result<{ msg: string }>;
+      switch (status) {
+        case 200:
+          toast.success('', { description: data.msg });
+          form.reset();
+          updateSignal = false;
+          break;
+
+        case 401:
+          toast.error('', { description: data.msg });
+          break;
+      }
+    }
   });
 
   const { form: formData, enhance, submitting } = form;
+
+  $effect(() => {
+    if (updateSignal) {
+      const parts = category.img_link.split('/');
+      const fullPath = parts[parts.length - 1];
+      $formData.oldName = category.name;
+      $formData.imgPath = fullPath;
+      $formData.newCatName = category.name;
+    }
+  });
 </script>
 
 <AlertDialog.Root bind:open={updateSignal}>
@@ -44,22 +71,22 @@
     </AlertDialog.Header>
 
     <form method="POST" enctype="multipart/form-data" action="?/updateCategoryEvent" use:enhance>
-      <Form.Field {form} name="imgPath">
+      <Form.Field {form} name="imgPath" class="hidden">
         <Form.Control let:attrs>
           <Input {...attrs} bind:value={$formData.imgPath} />
         </Form.Control>
       </Form.Field>
 
-      <Form.Field {form} name="catId">
+      <Form.Field {form} name="oldName" class="hidden">
         <Form.Control let:attrs>
-          <Input type="number" {...attrs} bind:value={$formData.catId} />
+          <Input {...attrs} bind:value={$formData.oldName} />
         </Form.Control>
       </Form.Field>
 
       <Form.Field {form} name="newCatPhoto">
         <Form.Control let:attrs>
           <Form.Label class="text-primary">Category Photo</Form.Label>
-          <ImgUploader hasLink="" {attrs} bind:file={$formData.newCatPhoto} />
+          <ImgUploader hasLink={category.img_link} {attrs} bind:file={$formData.newCatPhoto} />
         </Form.Control>
         <Form.FieldErrors />
       </Form.Field>
@@ -67,13 +94,27 @@
       <Form.Field {form} name="newCatName">
         <Form.Control let:attrs>
           <Form.Label class="text-primary">Category Name</Form.Label>
-          <Input {...attrs} bind:value={$formData.newCatName} />
+          <Input
+            {...attrs}
+            bind:value={$formData.newCatName}
+            placeholder="Enter new category name"
+          />
         </Form.Control>
 
         <Form.FieldErrors />
       </Form.Field>
       <AlertDialog.Footer>
-        <Form.Button>Update</Form.Button>
+        <Form.Button disabled={$submitting} class="relative">
+          {#if $submitting}
+            <div
+              class="absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center rounded-lg bg-primary"
+            >
+              <Loader class="h-[15px] w-[15px] animate-spin" />
+            </div>
+          {/if}
+
+          Update
+        </Form.Button>
       </AlertDialog.Footer>
     </form>
   </AlertDialog.Content>

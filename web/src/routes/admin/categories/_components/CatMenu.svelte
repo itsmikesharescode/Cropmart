@@ -5,12 +5,14 @@
   import UpdateCategory from './operations/UpdateCategory.svelte';
   import type { UpdateCatSchema } from './operations/schema';
   import DeleteCategory from './operations/DeleteCategory.svelte';
+  import type { AdminLayoutQ } from '$lib/types';
 
   interface Props {
     updateCatForm: SuperValidated<Infer<UpdateCatSchema>>;
+    category: AdminLayoutQ['categories'][number];
   }
 
-  const { updateCatForm }: Props = $props();
+  const { updateCatForm, category }: Props = $props();
 
   let updateSignal = $state(false);
   let deleteSignal = $state(false);
@@ -38,5 +40,5 @@
   </DropdownMenu.Content>
 </DropdownMenu.Root>
 
-<UpdateCategory bind:updateSignal {updateCatForm} />
+<UpdateCategory bind:updateSignal {updateCatForm} {category} />
 <DeleteCategory bind:deleteSignal />

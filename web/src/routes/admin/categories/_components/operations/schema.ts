@@ -11,7 +11,7 @@ export type CreateCatSchema = typeof createCatSchema;
 
 export const updateCatSchema = z.object({
   imgPath: z.string(),
-  catId: z.number(),
+  oldName: z.string(),
   newCatName: z.string().min(1, { message: 'Must enter a new catergory name.' }),
   newCatPhoto: z
     .instanceof(File, { message: 'Please upload a file.' })

@@ -48,7 +48,7 @@ export const actions: Actions = {
     const { error: updateErr } = await supabase
       .from('category_list_tb')
       .update([{ name: form.data.newCatName, img_link: publicAPI + storageRes.fullPath }])
-      .eq('name', form.data.newCatName);
+      .eq('name', form.data.oldName);
 
     if (updateErr) return fail(401, withFiles({ form, msg: updateErr.message }));
   }

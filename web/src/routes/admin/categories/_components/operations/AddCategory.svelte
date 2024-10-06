@@ -1,13 +1,15 @@
 <script lang="ts">
   import * as AlertDialog from '$lib/components/ui/alert-dialog';
   import Button from '$lib/components/ui/button/button.svelte';
-  import { Plus, X } from 'lucide-svelte';
+  import { Plus, X, Loader } from 'lucide-svelte';
   import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
   import { zodClient } from 'sveltekit-superforms/adapters';
   import * as Form from '$lib/components/ui/form';
   import { Input } from '$lib/components/ui/input';
   import { createCatSchema, type CreateCatSchema } from './schema';
   import ImgUploader from '$lib/components/general/ImgUploader.svelte';
+  import type { Result } from '$lib/types';
+  import { toast } from 'svelte-sonner';
 
   interface Props {
     createCategoryForm: SuperValidated<Infer<CreateCatSchema>>;
@@ -19,7 +21,21 @@
 
   const form = superForm(createCategoryForm, {
     validators: zodClient(createCatSchema),
-    id: crypto.randomUUID()
+    id: crypto.randomUUID(),
+    async onUpdate({ result }) {
+      const { status, data } = result as Result<{ msg: string }>;
+
+      switch (status) {
+        case 200:
+          toast.success('', { description: data.msg });
+          form.reset();
+          open = false;
+          break;
+        case 401:
+          toast.error('', { description: data.msg });
+          break;
+      }
+    }
   });
 
   const { form: formData, enhance, submitting } = form;
@@ -67,7 +83,17 @@
         <Form.FieldErrors />
       </Form.Field>
       <AlertDialog.Footer>
-        <Form.Button>Create</Form.Button>
+        <Form.Button disabled={$submitting} class="relative">
+          {#if $submitting}
+            <div
+              class="absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center rounded-lg bg-primary"
+            >
+              <Loader class="h-[15px] w-[15px] animate-spin" />
+            </div>
+          {/if}
+
+          Upload
+        </Form.Button>
       </AlertDialog.Footer>
     </form>
   </AlertDialog.Content>

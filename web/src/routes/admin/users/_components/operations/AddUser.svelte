@@ -1,7 +1,7 @@
 <script lang="ts">
   import * as AlertDialog from '$lib/components/ui/alert-dialog';
   import Button from '$lib/components/ui/button/button.svelte';
-  import { Plus, X } from 'lucide-svelte';
+  import { Plus, X, Loader } from 'lucide-svelte';
   import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
   import { zodClient } from 'sveltekit-superforms/adapters';
   import * as Form from '$lib/components/ui/form';
@@ -9,6 +9,8 @@
   import * as Select from '$lib/components/ui/select/index.js';
   import { createUserSchema, type CreateUserSchema } from './schema';
   import { ScrollArea } from '$lib/components/ui/scroll-area/index';
+  import type { Result } from '$lib/types';
+  import { toast } from 'svelte-sonner';
 
   interface Props {
     createUserForm: SuperValidated<Infer<CreateUserSchema>>;
@@ -20,7 +22,20 @@
 
   const form = superForm(createUserForm, {
     validators: zodClient(createUserSchema),
-    id: crypto.randomUUID()
+    id: crypto.randomUUID(),
+    async onUpdate({ result }) {
+      const { status, data } = result as Result<{ msg: string }>;
+      switch (status) {
+        case 200:
+          toast.success('', { description: data.msg });
+          form.reset();
+          open = false;
+          break;
+        case 401:
+          toast.error('', { description: data.msg });
+          break;
+      }
+    }
   });
 
   const { form: formData, enhance, submitting } = form;
@@ -38,6 +53,7 @@
 <AlertDialog.Root bind:open>
   <AlertDialog.Content class="p-0">
     <button
+      disabled={$submitting}
       type="button"
       onclick={() => {
         open = false;
@@ -160,7 +176,16 @@
         </div>
       </ScrollArea>
       <AlertDialog.Footer class="px-6 pb-6">
-        <Form.Button>Create</Form.Button>
+        <Form.Button disabled={$submitting} class="relative">
+          {#if $submitting}
+            <div
+              class="absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center rounded-lg bg-primary"
+            >
+              <Loader class="h-[15px] w-[15px] animate-spin" />
+            </div>
+          {/if}
+          Create
+        </Form.Button>
       </AlertDialog.Footer>
     </form>
   </AlertDialog.Content>

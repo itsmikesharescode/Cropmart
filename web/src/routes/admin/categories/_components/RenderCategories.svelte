@@ -16,7 +16,9 @@
 </script>
 
 <Table.Root>
-  <Table.Caption class="text-primary/80">No records.</Table.Caption>
+  {#if !categoryState.getCategories()?.length}
+    <Table.Caption class="text-primary/80">No records.</Table.Caption>
+  {/if}
   <Table.Header>
     <Table.Row>
       <Table.Head class="w-[50px]"></Table.Head>

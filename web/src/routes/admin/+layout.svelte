@@ -1,15 +1,19 @@
 <script lang="ts">
   import Nav from './_components/Nav.svelte';
+  import { fromCategoryState, initCategoryState } from './_route_states/catRoute.svelte';
   import { fromProductState, initProductState } from './_route_states/prodRoute.svelte';
 
   const { data, children } = $props();
 
   initProductState();
+  initCategoryState();
 
   const productState = fromProductState();
+  const categoryState = fromCategoryState();
 
   $effect(() => {
     productState.setProducts(data.adminLayoutQ.data?.products ?? null);
+    categoryState.setCategories(data.adminLayoutQ.data?.categories ?? null);
   });
 </script>
 

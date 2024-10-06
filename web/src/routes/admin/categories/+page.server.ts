@@ -20,7 +20,7 @@ export const actions: Actions = {
 
     const { data: storageRes, error: uploadErr } = await supabase.storage
       .from('category_bucket')
-      .upload(user.id, form.data.catPhoto, {
+      .upload(`${user.id}/${crypto.randomUUID()}`, form.data.catPhoto, {
         contentType: form.data.catPhoto.type
       });
 

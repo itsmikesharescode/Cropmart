@@ -52,7 +52,7 @@
         <input
           name="imgPath"
           type="hidden"
-          value={category.img_link.split('/').pop()?.split('?')[0] ?? ''}
+          value={category.img_link.split('category_bucket/')[1].split('?')[0]}
         />
         <input name="catId" type="hidden" value={category.id} />
         <Button disabled={deleteLoader} type="submit" variant="destructive" class="relative">

@@ -43,7 +43,7 @@
   $effect(() => {
     if (updateSignal) {
       $formData.catId = category.id;
-      $formData.imgPath = category.img_link.split('/').pop() ?? '';
+      $formData.imgPath = category.img_link.split('category_bucket/')[1].split('?')[0];
       $formData.newCatName = category.name;
     }
   });
@@ -69,7 +69,7 @@
     </AlertDialog.Header>
 
     <form method="POST" enctype="multipart/form-data" action="?/updateCategoryEvent" use:enhance>
-      <Form.Field {form} name="imgPath" class="hidden">
+      <Form.Field {form} name="imgPath" class="">
         <Form.Control let:attrs>
           <Input {...attrs} bind:value={$formData.imgPath} />
         </Form.Control>

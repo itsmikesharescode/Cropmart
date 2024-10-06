@@ -1,7 +1,7 @@
 import { getContext, setContext } from 'svelte';
 
 class UserState {
-  private riders = $state<unknown | null>(null);
+  private riders = $state<any[] | null>(null);
 
   setRiders(p: typeof this.riders) {
     this.riders = p;
@@ -11,7 +11,7 @@ class UserState {
     return this.riders;
   }
 
-  private farmers = $state<unknown | null>(null);
+  private farmers = $state<any[] | null>(null);
 
   setFarmers(p: typeof this.farmers) {
     this.farmers = p;
@@ -21,7 +21,7 @@ class UserState {
     return this.farmers;
   }
 
-  private entrepreneurs = $state<unknown | null>(null);
+  private entrepreneurs = $state<any[] | null>(null);
 
   setEntrepreneurs(p: typeof this.entrepreneurs) {
     this.entrepreneurs = p;

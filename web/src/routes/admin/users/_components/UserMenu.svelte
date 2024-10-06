@@ -13,14 +13,17 @@
   } from './operations/schema';
   import UpdateUserInfo from './operations/update_user/UpdateUserInfo.svelte';
   import UpdateUserPassword from './operations/update_user/UpdateUserPassword.svelte';
+  import type { UserListType } from '$lib/types';
 
   interface Props {
+    activeUser: UserListType;
     updateUserInfoForm: SuperValidated<Infer<UpdateUserInfoSchema>>;
     updateUserEmailForm: SuperValidated<Infer<UpdateUserEmailSchema>>;
     updateUserPwdForm: SuperValidated<Infer<UpdateUserPwdSchema>>;
   }
 
-  const { updateUserInfoForm, updateUserEmailForm, updateUserPwdForm }: Props = $props();
+  const { activeUser, updateUserInfoForm, updateUserEmailForm, updateUserPwdForm }: Props =
+    $props();
 
   let updateInfoSignal = $state(false);
   let updateEmailSignal = $state(false);
@@ -70,7 +73,7 @@
   </Menubar.Menu>
 </Menubar.Root>
 
-<UpdateUserInfo bind:updateInfoSignal {updateUserInfoForm} />
+<UpdateUserInfo {activeUser} bind:updateInfoSignal {updateUserInfoForm} />
 <UpdateUserEmail bind:updateEmailSignal {updateUserEmailForm} />
 <UpdateUserPassword bind:updatePwdSignal {updateUserPwdForm} />
 <DeleteUser bind:deleteSignal />

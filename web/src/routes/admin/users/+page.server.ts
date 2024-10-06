@@ -46,8 +46,18 @@ export const actions: Actions = {
     const form = await superValidate(request, zod(updateUserInfoSchema));
 
     if (!form.valid) return fail(400, { form });
+    const { error } = await supabaseAdmin.auth.admin.updateUserById(form.data.userId, {
+      user_metadata: {
+        address: form.data.newAddress,
+        lastName: form.data.newLname,
+        firstName: form.data.newFname,
+        mobileNumber: form.data.newMobileNum
+      }
+    });
 
-    console.log(form.data);
+    if (error) return fail(401, { form, msg: error.message });
+
+    return { form, msg: 'Account updated.' };
   },
 
   updateUserEmailEvent: async ({ locals: { supabaseAdmin }, request }) => {
@@ -55,7 +65,9 @@ export const actions: Actions = {
 
     if (!form.valid) return fail(400, { form });
 
-    console.log(form.data);
+    const { error } = await supabaseAdmin.auth.admin.updateUserById(form.data.userId, {
+      user_metadata: {}
+    });
   },
 
   updateUserPwdEvent: async ({ locals: { supabaseAdmin }, request }) => {

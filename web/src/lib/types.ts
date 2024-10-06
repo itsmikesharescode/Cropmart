@@ -25,7 +25,7 @@ interface ProductView extends ProductType {
 }
 
 export interface UserListType {
-  user_id: number;
+  user_id: string;
   created_at: string;
   user_meta_data: UserMetaDataType;
 }

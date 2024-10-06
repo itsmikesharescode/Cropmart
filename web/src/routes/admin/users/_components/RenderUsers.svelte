@@ -40,7 +40,7 @@
       <Table.Row>
         <Table.Cell class="font-medium">
           <div class="flex items-center">
-            <UserMenu {updateUserInfoForm} {updateUserEmailForm} {updateUserPwdForm} />
+            <UserMenu {activeUser} {updateUserInfoForm} {updateUserEmailForm} {updateUserPwdForm} />
           </div>
         </Table.Cell>
         <Table.Cell class="text-xs text-primary/90">{index + 1}</Table.Cell>

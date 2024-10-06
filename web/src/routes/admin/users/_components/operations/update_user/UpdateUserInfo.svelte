@@ -1,26 +1,53 @@
 <script lang="ts">
   import * as AlertDialog from '$lib/components/ui/alert-dialog';
   import Button from '$lib/components/ui/button/button.svelte';
-  import { Plus, X } from 'lucide-svelte';
+  import { Plus, X, Loader } from 'lucide-svelte';
   import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
   import { zodClient } from 'sveltekit-superforms/adapters';
   import * as Form from '$lib/components/ui/form';
   import { Input } from '$lib/components/ui/input';
   import { updateUserInfoSchema, type UpdateUserInfoSchema } from '../schema';
+  import type { Result, UserListType } from '$lib/types';
+  import { toast } from 'svelte-sonner';
 
   interface Props {
     updateUserInfoForm: SuperValidated<Infer<UpdateUserInfoSchema>>;
     updateInfoSignal: boolean;
+    activeUser: UserListType;
   }
 
-  let { updateInfoSignal = $bindable(), updateUserInfoForm }: Props = $props();
+  let { updateInfoSignal = $bindable(), updateUserInfoForm, activeUser }: Props = $props();
 
   const form = superForm(updateUserInfoForm, {
     validators: zodClient(updateUserInfoSchema),
-    id: crypto.randomUUID()
+    id: crypto.randomUUID(),
+    async onUpdate({ result }) {
+      const { status, data } = result as Result<{ msg: string }>;
+      switch (status) {
+        case 200:
+          toast.success('', { description: data.msg });
+          form.reset();
+          updateInfoSignal = false;
+          break;
+
+        case 401:
+          toast.error('', { description: data.msg });
+          break;
+      }
+    }
   });
 
   const { form: formData, enhance, submitting } = form;
+
+  $effect(() => {
+    if (updateInfoSignal) {
+      $formData.userId = activeUser.user_id;
+      $formData.newFname = activeUser.user_meta_data.firstName;
+      $formData.newLname = activeUser.user_meta_data.lastName;
+      $formData.newAddress = activeUser.user_meta_data.address;
+      $formData.newMobileNum = activeUser.user_meta_data.mobileNumber;
+    }
+  });
 </script>
 
 <AlertDialog.Root bind:open={updateInfoSignal}>
@@ -43,7 +70,7 @@
       </AlertDialog.Description>
     </AlertDialog.Header>
 
-    <form method="POST" enctype="multipart/form-data" action="?/createCategoryEvent" use:enhance>
+    <form method="POST" action="?/updateUserInfoEvent" use:enhance>
       <Form.Field {form} name="userId" class="hidden">
         <Form.Control let:attrs>
           <Input {...attrs} bind:value={$formData.userId} />
@@ -88,7 +115,16 @@
         <Form.FieldErrors />
       </Form.Field>
       <AlertDialog.Footer>
-        <Form.Button>Update</Form.Button>
+        <Form.Button disabled={$submitting} class="relative">
+          {#if $submitting}
+            <div
+              class="absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center rounded-lg bg-primary"
+            >
+              <Loader class="h-[15px] w-[15px] animate-spin" />
+            </div>
+          {/if}
+          Update
+        </Form.Button>
       </AlertDialog.Footer>
     </form>
   </AlertDialog.Content>

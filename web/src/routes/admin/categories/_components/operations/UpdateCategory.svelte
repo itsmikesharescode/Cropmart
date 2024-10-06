@@ -42,10 +42,8 @@
 
   $effect(() => {
     if (updateSignal) {
-      const parts = category.img_link.split('/');
-      const fullPath = parts[parts.length - 1];
-      $formData.oldName = category.name;
-      $formData.imgPath = fullPath;
+      $formData.catId = category.id;
+      $formData.imgPath = category.img_link.split('/').pop() ?? '';
       $formData.newCatName = category.name;
     }
   });
@@ -71,15 +69,15 @@
     </AlertDialog.Header>
 
     <form method="POST" enctype="multipart/form-data" action="?/updateCategoryEvent" use:enhance>
-      <Form.Field {form} name="imgPath" class="hidden">
+      <Form.Field {form} name="imgPath" class="">
         <Form.Control let:attrs>
           <Input {...attrs} bind:value={$formData.imgPath} />
         </Form.Control>
       </Form.Field>
 
-      <Form.Field {form} name="oldName" class="hidden">
+      <Form.Field {form} name="catId" class="hidden">
         <Form.Control let:attrs>
-          <Input {...attrs} bind:value={$formData.oldName} />
+          <Input type="number" {...attrs} bind:value={$formData.catId} />
         </Form.Control>
       </Form.Field>
 

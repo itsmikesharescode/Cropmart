@@ -45,7 +45,7 @@
         <Table.Cell class="text-xs text-primary/90">
           <div class="">
             <Avatar.Root class="h-[50px] w-[50px] rounded-lg">
-              <Avatar.Image src={category.img_link} alt="@loading" />
+              <Avatar.Image src={`${category.img_link}?${category.caching_token}`} alt="@loading" />
               <Avatar.Fallback>
                 {category.name[0].toUpperCase()}
               </Avatar.Fallback>

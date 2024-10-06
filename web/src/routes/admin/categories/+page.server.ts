@@ -12,14 +12,17 @@ export const load: PageServerLoad = async () => {
 };
 const publicAPI = 'https://sxubqviccwgfscizytkv.supabase.co/storage/v1/object/public/';
 export const actions: Actions = {
-  createCategoryEvent: async ({ locals: { supabase }, request }) => {
+  createCategoryEvent: async ({ locals: { supabase, user }, request }) => {
     const form = await superValidate(request, zod(createCatSchema));
 
     if (!form.valid) return fail(400, { form });
+    if (!user) return;
 
     const { data: storageRes, error: uploadErr } = await supabase.storage
       .from('category_bucket')
-      .upload(`${form.data.catName}`, form.data.catPhoto);
+      .upload(user.id, form.data.catPhoto, {
+        contentType: form.data.catPhoto.type
+      });
 
     if (uploadErr) return fail(401, withFiles({ form, msg: uploadErr.message }));
 
@@ -47,9 +50,17 @@ export const actions: Actions = {
 
     const { error: updateErr } = await supabase
       .from('category_list_tb')
-      .update([{ name: form.data.newCatName, img_link: publicAPI + storageRes.fullPath }])
-      .eq('name', form.data.oldName);
+      .update([
+        {
+          name: form.data.newCatName,
+          img_link: publicAPI + storageRes.fullPath,
+          caching_token: crypto.randomUUID()
+        }
+      ])
+      .eq('id', form.data.catId);
 
     if (updateErr) return fail(401, withFiles({ form, msg: updateErr.message }));
+
+    return withFiles({ form, msg: 'Category updated.' });
   }
 };

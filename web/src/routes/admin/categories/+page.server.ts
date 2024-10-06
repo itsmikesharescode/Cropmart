@@ -61,5 +61,24 @@ export const actions: Actions = {
     if (updateErr) return fail(401, withFiles({ form, msg: updateErr.message }));
 
     return withFiles({ form, msg: 'Category updated.' });
+  },
+
+  deleteCategoryEvent: async ({ locals: { supabase }, request }) => {
+    const formData = await request.formData();
+    const imgPath = formData.get('imgPath') as string;
+    const catId = formData.get('catId') as string;
+
+    const { error: removeErr } = await supabase.storage.from('category_bucket').remove([imgPath]);
+
+    if (removeErr) return fail(401, { msg: removeErr.message });
+
+    const { error: deleteErr } = await supabase
+      .from('category_list_tb')
+      .delete()
+      .eq('id', Number(catId));
+
+    if (deleteErr) return fail(401, { msg: deleteErr.message });
+
+    return { msg: 'Category deleted.' };
   }
 };

@@ -41,4 +41,4 @@
 </DropdownMenu.Root>
 
 <UpdateCategory bind:updateSignal {updateCatForm} {category} />
-<DeleteCategory bind:deleteSignal />
+<DeleteCategory bind:deleteSignal {category} />

@@ -1,7 +1,8 @@
+import type { AdminLayoutQ } from '$lib/types';
 import { getContext, setContext } from 'svelte';
 
 class CategoryState {
-  private categories = $state<unknown | null>(null);
+  private categories = $state<AdminLayoutQ['categories'][number][] | null>(null);
 
   setCategories(p: typeof this.categories) {
     this.categories = p;
@@ -19,5 +20,5 @@ export const initCategoryState = () => {
 };
 
 export const fromCategoryState = () => {
-  return getContext<ReturnType<typeof initCategoryState>>(CategoryState);
+  return getContext<ReturnType<typeof initCategoryState>>(CategoryKey);
 };

@@ -29,7 +29,7 @@ export const actions: Actions = {
     const { error: insertRowErr } = await supabase.from('category_list_tb').insert([
       {
         name: form.data.catName,
-        img_link: publicAPI + storageRes.fullPath
+        img_link: `${publicAPI + storageRes.fullPath}?${crypto.randomUUID()}`
       }
     ]);
 
@@ -53,8 +53,7 @@ export const actions: Actions = {
       .update([
         {
           name: form.data.newCatName,
-          img_link: publicAPI + storageRes.fullPath,
-          caching_token: crypto.randomUUID()
+          img_link: `${publicAPI + storageRes.fullPath}?${crypto.randomUUID()}`
         }
       ])
       .eq('id', form.data.catId);

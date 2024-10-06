@@ -20,6 +20,9 @@
   $effect(() => {
     productState.setProducts(data.adminLayoutQ.data?.products ?? null);
     categoryState.setCategories(data.adminLayoutQ.data?.categories ?? null);
+    userManagementState.setFarmers(data.adminLayoutQ.data?.farmers ?? null);
+    userManagementState.setEntrepreneurs(data.adminLayoutQ.data?.entrepreneurs ?? null);
+    userManagementState.setRiders(data.adminLayoutQ.data?.riders ?? null);
   });
 </script>
 

@@ -7,14 +7,18 @@
     UpdateUserInfoSchema,
     UpdateUserPwdSchema
   } from './operations/schema';
+  import type { UserListType } from '$lib/types';
+  import * as Avatar from '$lib/components/ui/avatar';
 
   interface Props {
     updateUserInfoForm: SuperValidated<Infer<UpdateUserInfoSchema>>;
     updateUserEmailForm: SuperValidated<Infer<UpdateUserEmailSchema>>;
     updateUserPwdForm: SuperValidated<Infer<UpdateUserPwdSchema>>;
+    activeArray: UserListType[] | null;
   }
 
-  const { updateUserInfoForm, updateUserEmailForm, updateUserPwdForm }: Props = $props();
+  const { updateUserInfoForm, updateUserEmailForm, updateUserPwdForm, activeArray }: Props =
+    $props();
 </script>
 
 <Table.Root>
@@ -32,7 +36,7 @@
     </Table.Row>
   </Table.Header>
   <Table.Body>
-    {#each Array(10) as _, index}
+    {#each activeArray ?? [] as activeUser, index}
       <Table.Row>
         <Table.Cell class="font-medium">
           <div class="flex items-center">
@@ -40,15 +44,31 @@
           </div>
         </Table.Cell>
         <Table.Cell class="text-xs text-primary/90">{index + 1}</Table.Cell>
-        <Table.Cell class="truncate text-xs text-primary/90">Phac Khu Kha</Table.Cell>
-        <Table.Cell class="text-xs text-primary/90"
-          >Pasig City, Client Change So Hot Philippines</Table.Cell
-        >
-        <Table.Cell class="text-xs text-primary/90">Malignos@gmail.com</Table.Cell>
-        <Table.Cell class="text-xs text-primary/90">+631425648272</Table.Cell>
-        <Table.Cell class="text-xs text-primary/90">{new Date().toLocaleDateString()}</Table.Cell>
+        <Table.Cell class="truncate text-xs text-primary/90">
+          {activeUser.user_meta_data.lastName},
+          {activeUser.user_meta_data.firstName}
+        </Table.Cell>
         <Table.Cell class="text-xs text-primary/90">
-          <div class="h-[50px] w-[50px] rounded-lg bg-red-500"></div>
+          {activeUser.user_meta_data.address}
+        </Table.Cell>
+        <Table.Cell class="text-xs text-primary/90">{activeUser.user_meta_data.email}</Table.Cell>
+        <Table.Cell class="text-xs text-primary/90"
+          >{activeUser.user_meta_data.mobileNumber}</Table.Cell
+        >
+        <Table.Cell class="truncate text-xs text-primary/90">
+          {new Date(activeUser.created_at).toLocaleDateString()} @ {new Date(
+            activeUser.created_at
+          ).toLocaleTimeString()}
+        </Table.Cell>
+        <Table.Cell class="text-xs text-primary/90">
+          <div class="">
+            <Avatar.Root class="">
+              <Avatar.Image src={activeUser.user_meta_data.avatarLink} alt="@loading" />
+              <Avatar.Fallback>
+                {activeUser.user_meta_data.lastName[0].toUpperCase()}
+              </Avatar.Fallback>
+            </Avatar.Root>
+          </div>
         </Table.Cell>
       </Table.Row>
     {/each}

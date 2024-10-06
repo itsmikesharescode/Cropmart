@@ -24,7 +24,16 @@ interface ProductView extends ProductType {
   user_meta_data: UserMetaDataType;
 }
 
+interface UserListType {
+  user_id: number;
+  created_at: string;
+  user_meta_data: UserMetaDataType;
+}
+
 export interface AdminLayoutQ {
   products: ProductView[] | [];
   categories: CategoryType[] | [];
+  farmers: UserListType[] | [];
+  entrepreneurs: UserListType[] | [];
+  riders: UserListType[] | [];
 }

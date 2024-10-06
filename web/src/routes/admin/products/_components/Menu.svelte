@@ -5,12 +5,14 @@
   import type { Infer, SuperValidated } from 'sveltekit-superforms';
   import type { UpdateProductSchema } from './operations/schema';
   import DeleteProduct from './operations/DeleteProduct.svelte';
+  import type { AdminLayoutQ } from '$lib/types';
 
   interface Props {
     updateProductForm: SuperValidated<Infer<UpdateProductSchema>>;
+    product: AdminLayoutQ['products'][number];
   }
 
-  const { updateProductForm }: Props = $props();
+  const { updateProductForm, product }: Props = $props();
 
   let updateSignal = $state(false);
   let deleteSignal = $state(false);
@@ -38,5 +40,5 @@
   </DropdownMenu.Content>
 </DropdownMenu.Root>
 
-<UpdateProduct bind:updateSignal {updateProductForm} />
+<UpdateProduct bind:updateSignal {updateProductForm} {product} />
 <DeleteProduct bind:deleteSignal />

@@ -35,7 +35,7 @@
       <Table.Row>
         <Table.Cell class="">
           <div class="flex items-center">
-            <Menu {updateProductForm} />
+            <Menu {updateProductForm} {product} />
           </div>
         </Table.Cell>
         <Table.Cell class="text-xs text-primary/90">
@@ -46,7 +46,7 @@
             product.created_at
           ).toLocaleTimeString()}
         </Table.Cell>
-        <Table.Cell class="text-xs text-primary/90 "
+        <Table.Cell class="truncate text-xs text-primary/90 "
           >{product.user_meta_data.lastName}, {product.user_meta_data.firstName}</Table.Cell
         >
         <Table.Cell class="text-xs text-primary/90 ">{product.name}</Table.Cell>

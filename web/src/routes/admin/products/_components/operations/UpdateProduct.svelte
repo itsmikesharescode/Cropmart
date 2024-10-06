@@ -7,27 +7,52 @@
   import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
   import { updateProductSchema, type UpdateProductSchema } from './schema';
   import { zodClient } from 'sveltekit-superforms/adapters';
-  import { X } from 'lucide-svelte';
+  import { X, Loader } from 'lucide-svelte';
+  import type { AdminLayoutQ, Result } from '$lib/types';
+  import { toast } from 'svelte-sonner';
 
   interface Props {
     updateSignal: boolean;
+    product: AdminLayoutQ['products'][number];
     updateProductForm: SuperValidated<Infer<UpdateProductSchema>>;
   }
 
-  let { updateSignal = $bindable(), updateProductForm }: Props = $props();
+  let { updateSignal = $bindable(), updateProductForm, product }: Props = $props();
 
   const form = superForm(updateProductForm, {
     validators: zodClient(updateProductSchema),
-    id: crypto.randomUUID()
+    id: crypto.randomUUID(),
+    async onUpdate({ result }) {
+      const { status, data } = result as Result<{ msg: string }>;
+      switch (status) {
+        case 200:
+          toast.success('', { description: data.msg });
+          form.reset();
+          updateSignal = false;
+          break;
+
+        case 401:
+          toast.error('', { description: data.msg });
+          break;
+      }
+    }
   });
 
   const { form: formData, enhance, submitting } = form;
+
+  $effect(() => {
+    if (updateSignal) {
+      $formData.price = product.price;
+    }
+  });
 </script>
 
 <Popover.Root>
   <AlertDialog.Root bind:open={updateSignal}>
     <AlertDialog.Content>
       <button
+        title={$submitting ? 'Plss wait the submission done' : 'Click to close'}
+        disabled={$submitting}
         onclick={() => {
           updateSignal = false;
           form.reset();
@@ -47,7 +72,14 @@
         </AlertDialog.Description>
       </AlertDialog.Header>
 
-      <form method="POST" use:enhance>
+      <form method="POST" action="?/updateProductEvent" use:enhance>
+        <Form.Field {form} name="productId" class="hidden">
+          <Form.Control let:attrs>
+            <Input type="number" {...attrs} bind:value={product.id} />
+          </Form.Control>
+
+          <Form.FieldErrors />
+        </Form.Field>
         <Form.Field {form} name="price">
           <Form.Control let:attrs>
             <Form.Label class="text-primary">Product Price</Form.Label>
@@ -57,7 +89,16 @@
           <Form.FieldErrors />
         </Form.Field>
         <AlertDialog.Footer>
-          <Form.Button>Update</Form.Button>
+          <Form.Button disabled={$submitting} class="relative">
+            {#if $submitting}
+              <div
+                class="absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center rounded-lg bg-primary"
+              >
+                <Loader class="h-[15px] w-[15px] animate-spin" />
+              </div>
+            {/if}
+            Update
+          </Form.Button>
         </AlertDialog.Footer>
       </form>
     </AlertDialog.Content>
@@ -67,8 +108,10 @@
       <Avatar.Image src="https://github.com/shadcn.png" alt="@shadcn" />
       <Avatar.Fallback>CN</Avatar.Fallback>
     </Avatar.Root>
-    <p class="text-sm font-semibold text-primary">Mike John Eviota</p>
-    <p class="text-sm text-primary/90">+639213456784</p>
-    <p class="text-sm text-primary/90">Blk 33 Lakas Tao, St Bernadeth Pasig City</p>
+    <p class="text-sm font-semibold text-primary">
+      {product.user_meta_data.lastName}, {product.user_meta_data.firstName}
+    </p>
+    <p class="text-sm text-primary/90">{product.user_meta_data.mobileNumber}</p>
+    <p class="text-sm text-primary/90">{product.user_meta_data.address}</p>
   </Popover.Content>
 </Popover.Root>

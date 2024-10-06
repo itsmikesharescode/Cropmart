@@ -54,6 +54,7 @@ export type UpdateUserEmailSchema = typeof updateUserEmailSchema;
 // for update user password
 export const updateUserPwdSchema = z
   .object({
+    userId: z.string(),
     newPwd: z.string().min(8, { message: 'Must choose a strong password' }),
     confirmNewPwd: z.string()
   })

@@ -1,30 +1,54 @@
 <script lang="ts">
   import * as AlertDialog from '$lib/components/ui/alert-dialog';
-  import { X } from 'lucide-svelte';
+  import { X, Loader } from 'lucide-svelte';
   import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
   import { zodClient } from 'sveltekit-superforms/adapters';
   import * as Form from '$lib/components/ui/form';
   import { Input } from '$lib/components/ui/input';
   import { updateUserPwdSchema, type UpdateUserPwdSchema } from '../schema';
+  import type { Result, UserListType } from '$lib/types';
+  import { toast } from 'svelte-sonner';
 
   interface Props {
     updateUserPwdForm: SuperValidated<Infer<UpdateUserPwdSchema>>;
     updatePwdSignal: boolean;
+    activeUser: UserListType;
   }
 
-  let { updatePwdSignal = $bindable(), updateUserPwdForm }: Props = $props();
+  let { updatePwdSignal = $bindable(), updateUserPwdForm, activeUser }: Props = $props();
 
   const form = superForm(updateUserPwdForm, {
     validators: zodClient(updateUserPwdSchema),
-    id: crypto.randomUUID()
+    id: crypto.randomUUID(),
+    async onUpdate({ result }) {
+      const { status, data } = result as Result<{ msg: string }>;
+      switch (status) {
+        case 200:
+          toast.success('', { description: data.msg });
+          form.reset();
+          updatePwdSignal = false;
+          break;
+
+        case 401:
+          toast.error('', { description: data.msg });
+          break;
+      }
+    }
   });
 
   const { form: formData, enhance, submitting } = form;
+
+  $effect(() => {
+    if (updatePwdSignal) {
+      $formData.userId = activeUser.user_id;
+    }
+  });
 </script>
 
 <AlertDialog.Root bind:open={updatePwdSignal}>
   <AlertDialog.Content>
     <button
+      disabled={$submitting}
       type="button"
       onclick={() => {
         updatePwdSignal = false;
@@ -42,7 +66,12 @@
       </AlertDialog.Description>
     </AlertDialog.Header>
 
-    <form method="POST" enctype="multipart/form-data" action="?/createCategoryEvent" use:enhance>
+    <form method="POST" action="?/updateUserPwdEvent" use:enhance>
+      <Form.Field {form} name="userId" class="hidden">
+        <Form.Control let:attrs>
+          <Input {...attrs} bind:value={$formData.userId} />
+        </Form.Control>
+      </Form.Field>
       <Form.Field {form} name="newPwd">
         <Form.Control let:attrs>
           <Form.Label class="text-primary">New Password</Form.Label>
@@ -71,7 +100,16 @@
         <Form.FieldErrors />
       </Form.Field>
       <AlertDialog.Footer>
-        <Form.Button>Update</Form.Button>
+        <Form.Button disabled={$submitting} class="relative">
+          {#if $submitting}
+            <div
+              class="absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center rounded-lg bg-primary"
+            >
+              <Loader class="h-[15px] w-[15px] animate-spin" />
+            </div>
+          {/if}
+          Update
+        </Form.Button>
       </AlertDialog.Footer>
     </form>
   </AlertDialog.Content>

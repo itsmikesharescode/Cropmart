@@ -82,6 +82,12 @@ export const actions: Actions = {
 
     if (!form.valid) return fail(400, { form });
 
-    console.log(form.data);
+    const { error } = await supabaseAdmin.auth.admin.updateUserById(form.data.userId, {
+      password: form.data.newPwd
+    });
+
+    if (error) return fail(401, { form, msg: error.message });
+
+    return { form, msg: 'Account password updated.' };
   }
 };

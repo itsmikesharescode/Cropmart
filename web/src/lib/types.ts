@@ -16,7 +16,7 @@ export interface UserMetaDataType {
   mobileNumber: string;
   email_verified: boolean;
   phone_verified: boolean;
-  avatarLink: string;
+  avatarLink: string | null;
 }
 
 interface ProductView extends ProductType {

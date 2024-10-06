@@ -105,8 +105,10 @@
   </AlertDialog.Root>
   <Popover.Content>
     <Avatar.Root>
-      <Avatar.Image src="https://github.com/shadcn.png" alt="@shadcn" />
-      <Avatar.Fallback>CN</Avatar.Fallback>
+      <Avatar.Image src={product.user_meta_data.avatarLink} alt="@userAvatar" />
+      <Avatar.Fallback class="text-primary">
+        {product.user_meta_data.firstName[0].toUpperCase()}
+      </Avatar.Fallback>
     </Avatar.Root>
     <p class="text-sm font-semibold text-primary">
       {product.user_meta_data.lastName}, {product.user_meta_data.firstName}

@@ -9,6 +9,7 @@
   } from './operations/schema';
   import type { UserListType } from '$lib/types';
   import * as Avatar from '$lib/components/ui/avatar';
+  import * as Popover from '$lib/components/ui/popover';
 
   interface Props {
     updateUserInfoForm: SuperValidated<Infer<UpdateUserInfoSchema>>;
@@ -32,7 +33,6 @@
       <Table.Head class="text-primary">Email</Table.Head>
       <Table.Head class="truncate text-primary">Phone Number</Table.Head>
       <Table.Head class="truncate text-primary">Created At</Table.Head>
-      <Table.Head class="text-primary">Photo</Table.Head>
     </Table.Row>
   </Table.Header>
   <Table.Body>
@@ -45,11 +45,22 @@
         </Table.Cell>
         <Table.Cell class="text-xs text-primary/90">{index + 1}</Table.Cell>
         <Table.Cell class="truncate text-xs text-primary/90">
+          <Avatar.Root class="">
+            <Avatar.Image src={activeUser.user_meta_data.avatarLink} alt="@loading" />
+            <Avatar.Fallback>
+              {activeUser.user_meta_data.lastName[0].toUpperCase()}
+            </Avatar.Fallback>
+          </Avatar.Root>
           {activeUser.user_meta_data.lastName},
           {activeUser.user_meta_data.firstName}
         </Table.Cell>
         <Table.Cell class="text-xs text-primary/90">
-          {activeUser.user_meta_data.address}
+          <Popover.Root>
+            <Popover.Trigger class="underline">View Address</Popover.Trigger>
+            <Popover.Content>
+              <p class="text-xs text-primary/90">{activeUser.user_meta_data.address}</p>
+            </Popover.Content>
+          </Popover.Root>
         </Table.Cell>
         <Table.Cell class="text-xs text-primary/90">{activeUser.user_meta_data.email}</Table.Cell>
         <Table.Cell class="text-xs text-primary/90"
@@ -59,16 +70,6 @@
           {new Date(activeUser.created_at).toLocaleDateString()} @ {new Date(
             activeUser.created_at
           ).toLocaleTimeString()}
-        </Table.Cell>
-        <Table.Cell class="text-xs text-primary/90">
-          <div class="">
-            <Avatar.Root class="">
-              <Avatar.Image src={activeUser.user_meta_data.avatarLink} alt="@loading" />
-              <Avatar.Fallback>
-                {activeUser.user_meta_data.lastName[0].toUpperCase()}
-              </Avatar.Fallback>
-            </Avatar.Root>
-          </div>
         </Table.Cell>
       </Table.Row>
     {/each}

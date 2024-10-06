@@ -7,9 +7,9 @@
   const { data } = $props();
 </script>
 
-<!-- <div class="sticky top-[4rem] z-20">
-	<UserNav />
-</div> -->
+<div class="sticky top-[3.9rem] z-20">
+  <UserNav />
+</div>
 <ScrollArea class="w-[900px]" orientation="horizontal">
   <div class="p-4">
     <RenderUsers

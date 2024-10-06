@@ -23,7 +23,6 @@
     <Table.Row>
       <Table.Head class="w-[50px]"></Table.Head>
       <Table.Head class="w-[50px] text-primary">ID</Table.Head>
-      <Table.Head class="w-[50px] text-primary">Role</Table.Head>
       <Table.Head class="text-primary">Fullname</Table.Head>
       <Table.Head class="truncate text-primary">Home Address</Table.Head>
       <Table.Head class="text-primary">Email</Table.Head>
@@ -41,7 +40,6 @@
           </div>
         </Table.Cell>
         <Table.Cell class="text-xs text-primary/90">{index + 1}</Table.Cell>
-        <Table.Cell class="text-xs text-primary/90">Entrepreneur</Table.Cell>
         <Table.Cell class="truncate text-xs text-primary/90">Phac Khu Kha</Table.Cell>
         <Table.Cell class="text-xs text-primary/90"
           >Pasig City, Client Change So Hot Philippines</Table.Cell

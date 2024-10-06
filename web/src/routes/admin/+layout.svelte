@@ -2,14 +2,20 @@
   import Nav from './_components/Nav.svelte';
   import { fromCategoryState, initCategoryState } from './_route_states/catRoute.svelte';
   import { fromProductState, initProductState } from './_route_states/prodRoute.svelte';
+  import {
+    fromUserManagementState,
+    initUserManagementState
+  } from './_route_states/userRoute.svelte';
 
   const { data, children } = $props();
 
   initProductState();
   initCategoryState();
+  initUserManagementState();
 
   const productState = fromProductState();
   const categoryState = fromCategoryState();
+  const userManagementState = fromUserManagementState();
 
   $effect(() => {
     productState.setProducts(data.adminLayoutQ.data?.products ?? null);

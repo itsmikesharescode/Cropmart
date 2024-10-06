@@ -39,6 +39,17 @@ export const actions: Actions = {
     const form = await superValidate(request, zod(updateCatSchema));
 
     if (!form.valid) return fail(400, { form });
-    console.log(form.data);
+
+    const { data: storageRes, error: upsertErr } = await supabase.storage
+      .from('category_bucket')
+      .update('', form.data.newCatPhoto, { upsert: true });
+
+    if (upsertErr) return fail(401, withFiles({ form, msg: upsertErr.message }));
+
+    const { error: updateErr } = await supabase
+      .from('category_list_tb')
+      .update([{ name: form.data.newCatName, img_link: publicAPI + storageRes.fullPath }]);
+
+    if (updateErr) return fail(401, withFiles({ form, msg: updateErr.message }));
   }
 };

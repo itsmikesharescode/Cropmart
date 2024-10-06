@@ -41,4 +41,4 @@
 </DropdownMenu.Root>
 
 <UpdateProduct bind:updateSignal {updateProductForm} {product} />
-<DeleteProduct bind:deleteSignal />
+<DeleteProduct bind:deleteSignal {product} />

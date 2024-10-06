@@ -44,6 +44,18 @@
     </AlertDialog.Header>
 
     <form method="POST" enctype="multipart/form-data" action="?/updateCategoryEvent" use:enhance>
+      <Form.Field {form} name="imgPath">
+        <Form.Control let:attrs>
+          <Input {...attrs} bind:value={$formData.imgPath} />
+        </Form.Control>
+      </Form.Field>
+
+      <Form.Field {form} name="catId">
+        <Form.Control let:attrs>
+          <Input type="number" {...attrs} bind:value={$formData.catId} />
+        </Form.Control>
+      </Form.Field>
+
       <Form.Field {form} name="newCatPhoto">
         <Form.Control let:attrs>
           <Form.Label class="text-primary">Category Photo</Form.Label>

@@ -57,7 +57,7 @@ export const actions: Actions = {
 
     if (error) return fail(401, { form, msg: error.message });
 
-    return { form, msg: 'Account updated.' };
+    return { form, msg: 'Account information updated.' };
   },
 
   updateUserEmailEvent: async ({ locals: { supabaseAdmin }, request }) => {
@@ -66,8 +66,15 @@ export const actions: Actions = {
     if (!form.valid) return fail(400, { form });
 
     const { error } = await supabaseAdmin.auth.admin.updateUserById(form.data.userId, {
-      user_metadata: {}
+      email: form.data.newEmail,
+      user_metadata: {
+        email: form.data.newEmail
+      }
     });
+
+    if (error) return fail(401, { form, msg: error.message });
+
+    return { form, msg: 'Account email updated.' };
   },
 
   updateUserPwdEvent: async ({ locals: { supabaseAdmin }, request }) => {

@@ -74,6 +74,6 @@
 </Menubar.Root>
 
 <UpdateUserInfo {activeUser} bind:updateInfoSignal {updateUserInfoForm} />
-<UpdateUserEmail bind:updateEmailSignal {updateUserEmailForm} />
+<UpdateUserEmail {activeUser} bind:updateEmailSignal {updateUserEmailForm} />
 <UpdateUserPassword bind:updatePwdSignal {updateUserPwdForm} />
 <DeleteUser bind:deleteSignal />

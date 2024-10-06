@@ -1,13 +1,12 @@
-import { Alert, StyleSheet, Text, TouchableOpacity, View, Image, ToastAndroid } from 'react-native';
+import { Text, TouchableOpacity, View, Image, ToastAndroid } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { Controller, useForm, useWatch } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { updatePhotoSchema, UpdatePhotoSchema } from './schema';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import CustomButton from '@/components/CustomButton';
 import { supabase } from '@/lib/supabase';
 import { useUserSelector } from '@/store/useUser';
-import { useState } from 'react';
 
 const UpdateProfilePhoto = () => {
   const userState = useUserSelector((state) => state.userState);
@@ -52,6 +51,8 @@ const UpdateProfilePhoto = () => {
   };
 
   const onSubmit = async (formData: UpdatePhotoSchema) => {
+    if (!userState) return;
+
     const publicEndpoint = 'https://sxubqviccwgfscizytkv.supabase.co/storage/v1/object/public/';
 
     const { data, error } = await supabase.storage
@@ -124,5 +125,3 @@ const UpdateProfilePhoto = () => {
 };
 
 export default UpdateProfilePhoto;
-
-const styles = StyleSheet.create({});

@@ -1,3 +1,4 @@
+import type { CategoryType } from './db_types/category.types';
 import type { ProductType } from './db_types/product.types';
 
 export interface Result<T> {
@@ -25,4 +26,5 @@ interface ProductView extends ProductType {
 
 export interface AdminLayoutQ {
   products: ProductView[] | [];
+  categories: CategoryType[] | [];
 }

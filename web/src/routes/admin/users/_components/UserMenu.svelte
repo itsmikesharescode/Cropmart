@@ -76,4 +76,4 @@
 <UpdateUserInfo {activeUser} bind:updateInfoSignal {updateUserInfoForm} />
 <UpdateUserEmail {activeUser} bind:updateEmailSignal {updateUserEmailForm} />
 <UpdateUserPassword {activeUser} bind:updatePwdSignal {updateUserPwdForm} />
-<DeleteUser bind:deleteSignal />
+<DeleteUser {activeUser} bind:deleteSignal />

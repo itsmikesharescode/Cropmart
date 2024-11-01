@@ -5,6 +5,7 @@
   import { page } from '$app/stores';
   import Button from '$lib/components/ui/button/button.svelte';
   import AdminLogout from './AdminLogout.svelte';
+    import { fromUserState } from '$lib/states/userState.svelte';
 
   interface Props {
     children: Snippet;
@@ -12,7 +13,7 @@
 
   const { ...props }: Props = $props();
 
-
+  const userState = fromUserState();
   const site_map = [
     {
       url: '/admin',
@@ -63,8 +64,8 @@
     >
       <AdminLogout />
       <div class="flex items-center gap-2.5">
-        <p class="font-semibold leading-7 text-muted-foreground">Admin, <strong>Kaloy</strong></p>
-        <div class="h-[45px] w-[45px] rounded-full bg-red-500"></div>
+        <p class="font-semibold leading-7 text-muted-foreground">Admin, <strong>{userState.get()?.email}</strong></p>
+       
       </div>
     </nav>
 

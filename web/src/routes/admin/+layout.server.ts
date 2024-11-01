@@ -3,11 +3,19 @@ import type { LayoutServerLoad } from './$types';
 import type { AdminLayoutQ } from '$lib/types';
 
 export const load: LayoutServerLoad = async ({ locals: { supabase } }) => {
-  const { data, error } = await supabase.rpc('get_monthly_status_counts');
-
-  console.log(data, error?.message);
-
   return {
-    adminLayoutQ: (await supabase.rpc('admin_layout_q')) as PostgrestSingleResponse<AdminLayoutQ>
+    adminLayoutQ: (await supabase.rpc('admin_layout_q')) as PostgrestSingleResponse<AdminLayoutQ>,
+    adminMonthlyStatusCounts: (await supabase.rpc(
+      'get_monthly_status_counts'
+    )) as PostgrestSingleResponse<{
+      total_ongoing: {
+        date: string;
+        count: number;
+      }[];
+      total_delivered: {
+        date: string;
+        count: number;
+      }[];
+    }>
   };
 };

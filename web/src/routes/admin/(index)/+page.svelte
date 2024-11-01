@@ -5,9 +5,12 @@
   import BarChart from './_components/BarChart.svelte';
   import LineChart from './_components/LineChart.svelte';
 
+  const { data } = $props();
+
   const productState = fromProductState();
   const categoryState = fromCategoryState();
   const userManagementState = fromUserManagementState();
+  
 </script>
 
 {#snippet CounterCard(title: string, count: number)}
@@ -20,10 +23,10 @@
 <div class="flex flex-col gap-2.5 p-4">
   <div class="grid grid-cols-2 gap-2.5">
     <div class="h-[30dvh]">
-      <LineChart />
+      <LineChart total_ongoing={data.adminMonthlyStatusCounts.data?.total_ongoing ?? []} />
     </div>
     <div class="h-[30dvh]">
-      <BarChart />
+      <BarChart total_delivered={data.adminMonthlyStatusCounts.data?.total_delivered ?? []} />
     </div>
   </div>
 

@@ -1,16 +1,22 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import Chart from 'chart.js/auto';
-  /* import { fromThemeState } from '../../_state/fromThemeState.svelte';
-  
-    const theme = fromThemeState(); */
+
+  interface Props {
+    total_delivered: {
+      date: string;
+      count: number;
+    }[];
+  }
+
+  const { total_delivered }: Props = $props();
 
   let chartCanvas: HTMLCanvasElement | undefined = $state(undefined);
   let chartInstance: Chart | null = $state(null);
 
   // needs optimize for now lets cohers this sht
-  const chartValues: number[] = [20, 50, 60, 60, 100, 6];
-  const chartLabels: string[] = ['1', '2', '3', '4', '5', '6'];
+  const chartValues: number[] = total_delivered.map((item) => item.count);
+  const chartLabels: string[] = total_delivered.map((item) => item.date);
 
   onMount(async () => {
     if (typeof window !== 'undefined') {
@@ -31,7 +37,7 @@
         labels: chartLabels,
         datasets: [
           {
-            label: 'Reports this week',
+            label: 'Delivered this month',
             backgroundColor: '#91B43F',
             data: chartValues
           }

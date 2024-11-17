@@ -1,53 +1,48 @@
 <script lang="ts">
-  import * as Table from '$lib/components/ui/table';
-  import { AlignJustify } from 'lucide-svelte';
   import UserNav from './_components/UserNav.svelte';
   import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
+  import RenderUsers from './_components/RenderUsers.svelte';
+  import AddUser from './_components/operations/AddUser.svelte';
+  import { fromUserManagementState } from '../_route_states/userRoute.svelte';
+  import type { UserListType } from '$lib/types';
+
+  const { data } = $props();
+  const userManagementState = fromUserManagementState();
+
+  let activeSite = $state('Farmers');
+  let activeArray = $state<UserListType[] | null>(null);
+
+  $effect(() => {
+    if (activeSite === 'Farmers') {
+      activeArray = userManagementState.getFarmers();
+    }
+
+    if (activeSite === 'Entrepreneurs') {
+      activeArray = userManagementState.getEntrepreneurs();
+    }
+
+    if (activeSite === 'Riders') {
+      activeArray = userManagementState.getRiders();
+    }
+  });
 </script>
 
-<!-- <div class="sticky top-[4rem] z-20">
-	<UserNav />
-</div> -->
+<div class="sticky top-[3.9rem] z-20">
+  <UserNav bind:activeSite />
+</div>
 <ScrollArea class="w-[900px]" orientation="horizontal">
   <div class="p-4">
-    <Table.Root>
-      <Table.Caption class="text-primary/80">No records.</Table.Caption>
-      <Table.Header>
-        <Table.Row>
-          <Table.Head class="w-[50px]"></Table.Head>
-          <Table.Head class="w-[50px] text-primary">ID</Table.Head>
-          <Table.Head class="w-[50px] text-primary">Role</Table.Head>
-          <Table.Head class="text-primary">Fullname</Table.Head>
-          <Table.Head class="truncate text-primary">Home Address</Table.Head>
-          <Table.Head class="text-primary">Email</Table.Head>
-          <Table.Head class="truncate text-primary">Phone Number</Table.Head>
-          <Table.Head class="truncate text-primary">Created At</Table.Head>
-          <Table.Head class="text-primary">Photo</Table.Head>
-        </Table.Row>
-      </Table.Header>
-      <Table.Body>
-        {#each Array(10) as _, index}
-          <Table.Row>
-            <Table.Cell class="font-medium">
-              <AlignJustify class="text-primary/90" />
-            </Table.Cell>
-            <Table.Cell class="text-xs text-primary/90">{index + 1}</Table.Cell>
-            <Table.Cell class="text-xs text-primary/90">Entrepreneur</Table.Cell>
-            <Table.Cell class="truncate text-xs text-primary/90">Phac Khu Kha</Table.Cell>
-            <Table.Cell class="text-xs text-primary/90"
-              >Pasig City, Client Change So Hot Philippines</Table.Cell
-            >
-            <Table.Cell class="text-xs text-primary/90">Malignos@gmail.com</Table.Cell>
-            <Table.Cell class="text-xs text-primary/90">+631425648272</Table.Cell>
-            <Table.Cell class="text-xs text-primary/90"
-              >{new Date().toLocaleDateString()}</Table.Cell
-            >
-            <Table.Cell class="text-xs text-primary/90">
-              <div class="h-[50px] w-[50px] rounded-lg bg-red-500"></div>
-            </Table.Cell>
-          </Table.Row>
-        {/each}
-      </Table.Body>
-    </Table.Root>
+    <RenderUsers
+      {activeArray}
+      updateUserInfoForm={data.updateUserInfoForm}
+      updateUserEmailForm={data.updateUserEmailForm}
+      updateUserPwdForm={data.updateUserPwdForm}
+    />
+  </div>
+
+  <div class="fixed bottom-6 right-0 z-20 w-full">
+    <div class="mx-auto flex max-w-[1200px] justify-end">
+      <AddUser createUserForm={data.createUserForm} />
+    </div>
   </div>
 </ScrollArea>

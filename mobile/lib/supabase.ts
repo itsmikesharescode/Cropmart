@@ -6,10 +6,10 @@ const supabaseAnonKey = process.env.EXPO_PUBLIC_API_KEY ?? '';
 
 // Create the Supabase client
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-	auth: {
-		storage: AsyncStorage,
-		autoRefreshToken: true,
-		persistSession: true,
-		detectSessionInUrl: false
-	}
+  auth: {
+    storage: AsyncStorage,
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: false
+  }
 });

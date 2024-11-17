@@ -8,9 +8,6 @@
   export { className as class };
 </script>
 
-<MenubarPrimitive.Root
-  class={cn('flex h-10 items-center space-x-1 rounded-md border bg-background p-1', className)}
-  {...$$restProps}
->
+<MenubarPrimitive.Root class={cn('flex items-center  rounded-md ', className)} {...$$restProps}>
   <slot />
 </MenubarPrimitive.Root>

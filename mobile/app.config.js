@@ -1,21 +1,35 @@
 export default {
   expo: {
-    // ... rest of your existing config ...
-    scheme: 'cropmart',
-    extra: {
-      EXPO_PUBLIC_API_URL: process.env.EXPO_PUBLIC_API_URL,
-      EXPO_PUBLIC_API_KEY: process.env.EXPO_PUBLIC_API_KEY,
-      eas: {
-        projectId: 'c9a567de-2422-43d4-8180-1ba83522d68e'
-      }
-    },
+    name: 'Crop Mart',
+    slug: 'cropmart-n',
+    version: '2.0.0',
+    orientation: 'portrait',
     icon: './assets/images/icon.png',
+    scheme: 'cropmart',
+    userInterfaceStyle: 'automatic',
+    splash: {
+      image: './assets/images/splash.png',
+      resizeMode: 'contain',
+      backgroundColor: '#ffffff'
+    },
+    ios: {
+      supportsTablet: true
+    },
     android: {
-      package: 'com.crop.mart',
       adaptiveIcon: {
         foregroundImage: './assets/images/adaptive-icon.png',
         backgroundColor: '#ffffff'
-      }
+      },
+      package: 'com.crop.mart'
+    },
+    web: {
+      bundler: 'metro',
+      output: 'static',
+      favicon: './assets/images/favicon.png'
+    },
+    plugins: ['expo-router'],
+    experiments: {
+      typedRoutes: true
     }
   }
 };

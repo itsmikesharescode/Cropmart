@@ -154,7 +154,8 @@ const ShipmentScreen = () => {
                 <View className="">
                   <Text className="font-psemibold text-lg">Buyer Info</Text>
                   <Text className="font-pregular text-base">
-                    {processing.product_obj.buyer.lastName}, {processing.product_obj.buyer.lastName}
+                    {processing.product_obj.buyer.lastName},{' '}
+                    {processing.product_obj.buyer.firstName}
                   </Text>
                   <Text className="font-pregular text-base">
                     {processing.product_obj.buyer.email}

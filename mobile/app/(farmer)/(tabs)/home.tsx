@@ -21,6 +21,7 @@ import { router } from 'expo-router';
 
 const ProductSnippet: React.FC<ProductType> = (product) => {
   const deleteProduct = useProductsSelector((state) => state.deleteProduct);
+  const setProduct = useProductsSelector((state) => state.setProduct);
   let [loader, setLoader] = useState<'delete' | 'update' | null>(null);
 
   const renderRightActions = (dragX: any) => {
@@ -59,6 +60,7 @@ const ProductSnippet: React.FC<ProductType> = (product) => {
 
   const handleUpdate = async () => {
     setLoader('update');
+    setProduct(product);
     router.push({
       pathname: '/(farmer)/(update-product)/update-product',
       params: { from: 'home', product: product.name, prodId: product.id }

@@ -19,8 +19,6 @@ const imageFileSchema = fileAssetSchema.refine((data) => data.size <= 5000 * 102
 const numberRegex = /^[0-9]+(\.[0-9]{1,2})?$/;
 
 export const prodUpDateSchema = z.object({
-  id: z.string(),
-  photoPath: z.string(),
   prodImage: imageFileSchema,
   cat: z.string().min(1, { message: 'Must enter category.' }),
   prodName: z.string().min(1, { message: 'Must enter product name.' }),

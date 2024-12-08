@@ -33,6 +33,7 @@ const CartScreen = () => {
   const userState = useUserSelector((state) => state.userState);
   const setProducts = useProductsSelector((state) => state.setProducts);
   const categories = useCategorySelector((state) => state.categories);
+  const product = useProductsSelector((state) => state.product);
 
   const {
     control,
@@ -40,7 +41,15 @@ const CartScreen = () => {
     setValue,
     reset,
     formState: { errors, isSubmitting }
-  } = useForm<ProdUpDateSchema>({ resolver: zodResolver(prodUpDateSchema) });
+  } = useForm<ProdUpDateSchema>({
+    resolver: zodResolver(prodUpDateSchema),
+    defaultValues: {
+      prodName: product?.name || '',
+      price: product?.price?.toString() || '',
+      quantity: product?.quantity?.toString() || '',
+      cat: product?.category || ''
+    }
+  });
 
   const formValues = useWatch({ control });
 
@@ -92,12 +101,13 @@ const CartScreen = () => {
       reset();
       return;
     } else if (data) {
-      const { data: products, error: insertErr } = (await supabase.rpc('insert_product', {
+      const { data: products, error: insertErr } = (await supabase.rpc('update_product', {
+        product_id_client: product?.id,
         name_client: formData.prodName,
         price_client: Number(formData.price),
         quantity_client: Number(formData.quantity),
         category_client: formData.cat,
-        img_link: publicEndpoint + data.path
+        img_link_client: publicEndpoint + data.path
       })) as PostgrestSingleResponse<ProductType[]>;
       if (insertErr) {
         ToastAndroid.show(insertErr.message, ToastAndroid.LONG);
@@ -105,7 +115,7 @@ const CartScreen = () => {
         return;
       } else if (products) {
         setProducts(products);
-        ToastAndroid.show('Product Uploaded', ToastAndroid.LONG);
+        ToastAndroid.show('Product Updated', ToastAndroid.LONG);
         reset();
         router.replace('/(farmer)/(tabs)/home');
       }
@@ -250,7 +260,7 @@ const CartScreen = () => {
           </View>
 
           <CustomButton
-            title="Upload Product"
+            title="Update Product"
             handPress={handleSubmit(onSubmit)}
             containerStyle="mt-2"
             isLoading={isSubmitting}

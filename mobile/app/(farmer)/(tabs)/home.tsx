@@ -17,6 +17,7 @@ import { useState } from 'react';
 import { ProductType } from '@/lib/db_types/product.types';
 import { Swipeable } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 
 const ProductSnippet: React.FC<ProductType> = (product) => {
   const deleteProduct = useProductsSelector((state) => state.deleteProduct);
@@ -58,7 +59,10 @@ const ProductSnippet: React.FC<ProductType> = (product) => {
 
   const handleUpdate = async () => {
     setLoader('update');
-    // Add your update logic here
+    router.push({
+      pathname: '/(farmer)/(update-product)/update-product',
+      params: { from: 'home', product: product.name, prodId: product.id }
+    });
     setLoader(null);
   };
 

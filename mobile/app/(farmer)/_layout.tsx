@@ -40,6 +40,7 @@ const FarmerScreenLayout = () => {
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="(profile-settings)" options={{ headerShown: false }} />
+        <Stack.Screen name="(update-product)" options={{ headerShown: false }} />
       </Stack>
     </GestureHandlerRootView>
   );

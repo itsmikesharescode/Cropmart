@@ -15,75 +15,121 @@ import { useProductsSelector } from '../_store/productStore';
 import { supabase } from '@/lib/supabase';
 import { useState } from 'react';
 import { ProductType } from '@/lib/db_types/product.types';
+import { Swipeable } from 'react-native-gesture-handler';
+import { Ionicons } from '@expo/vector-icons';
 
 const ProductSnippet: React.FC<ProductType> = (product) => {
   const deleteProduct = useProductsSelector((state) => state.deleteProduct);
-  let [loader, setLoader] = useState(false);
+  let [loader, setLoader] = useState<'delete' | 'update' | null>(null);
+
+  const renderRightActions = (dragX: any) => {
+    return (
+      <View className="flex-row gap-1 pt-2">
+        <TouchableOpacity
+          onPress={() => handleUpdate()}
+          className="bg-blue-500 w-[70] h-full justify-center items-center"
+        >
+          {loader === 'update' ? (
+            <ActivityIndicator color="white" />
+          ) : (
+            <>
+              <Ionicons name="create-outline" size={24} color="white" />
+              <Text className="text-white font-psemibold text-xs mt-1">Update</Text>
+            </>
+          )}
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={handleDelete}
+          className="bg-red-500 w-[70] h-full justify-center items-center "
+        >
+          {loader === 'delete' ? (
+            <ActivityIndicator color="white" />
+          ) : (
+            <>
+              <Ionicons name="trash-outline" size={24} color="white" />
+              <Text className="text-white font-psemibold text-xs mt-1">Delete</Text>
+            </>
+          )}
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  const handleUpdate = async () => {
+    setLoader('update');
+    // Add your update logic here
+    setLoader(null);
+  };
 
   const handleDelete = async () => {
-    Alert.alert('Are you sure?', `You are about to delete this product ${product.name}`, [
+    Alert.alert('Delete Product', `Are you sure you want to delete "${product.name}"?`, [
       {
         text: 'Cancel',
-        onPress: () => {},
         style: 'cancel'
       },
       {
-        text: 'OK',
+        text: 'Delete',
+        style: 'destructive',
         onPress: async () => {
-          setLoader(true);
-          await supabase.storage.from('product_bucket').remove([product.img_link.slice(81)]);
-          const { error } = await supabase.from('product_list_tb').delete().eq('id', product.id);
-          if (error) {
-            ToastAndroid.show(error.message, ToastAndroid.LONG);
-            setLoader(false);
-            return;
+          setLoader('delete');
+          try {
+            await supabase.storage.from('product_bucket').remove([product.img_link.slice(81)]);
+            const { error } = await supabase.from('product_list_tb').delete().eq('id', product.id);
+
+            if (error) throw error;
+
+            deleteProduct(product.id);
+            ToastAndroid.show('Product deleted successfully', ToastAndroid.SHORT);
+          } catch (error: any) {
+            ToastAndroid.show(error.message || 'Failed to delete product', ToastAndroid.LONG);
+          } finally {
+            setLoader(null);
           }
-          ToastAndroid.show('Product deleted.', ToastAndroid.LONG);
-          setLoader(false);
-          deleteProduct(product.id);
-          return;
         }
       }
     ]);
   };
 
   return (
-    <View>
-      <View className="mt-2">
-        <Text className="p-2 bg-primary/80 font-pregular text-white">{product.category}</Text>
-      </View>
-      <TouchableOpacity onLongPress={handleDelete} className="gap-2 relative rounded-lg">
-        <View>
-          <Image
-            source={{ uri: product.img_link }}
-            resizeMode="cover"
-            className="w-full h-[200px]"
-          />
+    <Swipeable renderRightActions={renderRightActions}>
+      <View>
+        <View className="mt-2">
+          <Text className="p-2 bg-primary font-pregular text-white">{product.category}</Text>
         </View>
-        <View className="top-3 left-3 absolute flex-row">
-          <Text className="font-psemibold text-[15px] px-2 bg-secondary/50">{product.name}</Text>
-        </View>
-        <View className="absolute top-3 right-3">
-          <Text className="font-psemibold text-[15px] px-2 bg-primary/80 text-white ">
-            ₱ {product.price.toLocaleString()} / Kg
-          </Text>
-        </View>
-
-        <View className="absolute bottom-3 left-3">
-          <Text className="font-psemibold text-[15px] px-2 bg-primary/80 text-white ">
-            Available: {product.quantity.toLocaleString()} Kilos
-          </Text>
-        </View>
-
-        {loader ? (
-          <View className="absolute left-0 right-0 top-0 bottom-0 flex justify-center bg-slate-900/50">
-            <ActivityIndicator size="large" />
+        <TouchableOpacity className="gap-2 relative rounded-lg">
+          <View>
+            <Image
+              source={{ uri: product.img_link }}
+              resizeMode="cover"
+              className="w-full h-[200px]"
+            />
           </View>
-        ) : (
-          ''
-        )}
-      </TouchableOpacity>
-    </View>
+          <View className="top-3 left-3 absolute flex-row">
+            <Text className="font-psemibold text-[15px] px-2 bg-secondary/50">{product.name}</Text>
+          </View>
+          <View className="absolute top-3 right-3">
+            <Text className="font-psemibold text-[15px] px-2 bg-primary/80 text-white ">
+              ₱ {product.price.toLocaleString()} / Kg
+            </Text>
+          </View>
+
+          <View className="absolute bottom-3 left-3">
+            <Text className="font-psemibold text-[15px] px-2 bg-primary/80 text-white ">
+              Available: {product.quantity.toLocaleString()} Kilos
+            </Text>
+          </View>
+
+          {loader ? (
+            <View className="absolute left-0 right-0 top-0 bottom-0 flex justify-center bg-slate-900/50">
+              <ActivityIndicator size="large" />
+            </View>
+          ) : (
+            ''
+          )}
+        </TouchableOpacity>
+      </View>
+    </Swipeable>
   );
 };
 

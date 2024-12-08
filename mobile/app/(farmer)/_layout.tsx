@@ -5,6 +5,7 @@ import { getFarmerLayoutQ } from './db_calls/layoutQ';
 import { useEffect } from 'react';
 import { useProcessingsSelector } from './_store/processingStore';
 import { useCategorySelector } from './_store/categoryStore';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const FarmerScreenLayout = () => {
   const userState = useUserSelector((state) => state.userState);
@@ -35,10 +36,13 @@ const FarmerScreenLayout = () => {
     promiseLayoutQ();
   }, []);
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="(profile-settings)" options={{ headerShown: false }} />
-    </Stack>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="(profile-settings)" options={{ headerShown: false }} />
+        <Stack.Screen name="(update-product)" options={{ headerShown: false }} />
+      </Stack>
+    </GestureHandlerRootView>
   );
 };
 

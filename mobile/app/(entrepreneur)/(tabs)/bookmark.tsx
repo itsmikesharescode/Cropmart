@@ -12,15 +12,30 @@ import {
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link, router } from 'expo-router';
-import { EntrepLayoutQ } from '@/lib/db_types/entrepLayoutQ.types';
+import { EntrepLayoutQ, ProductLJUser } from '@/lib/db_types/entrepLayoutQ.types';
 import { useBookmarksSelector } from '../_store/bookmarkStore';
 import { useProductsSelector } from '../_store/productStore';
 import { supabase } from '@/lib/supabase';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
+import { viewProductSelector } from '../_store/viewingProductStore';
+import { useUserSelector } from '@/store/useUser';
+import { UserMetaDataType } from '@/lib/db_types/user.types';
 
 const ProductSnippet: React.FC<EntrepLayoutQ['bookmarks'][number]> = (bookmark) => {
   const setBookmarks = useBookmarksSelector((state) => state.setBookmarks);
   let [loader, setLoader] = useState(false);
+  const setProduct = viewProductSelector((state) => state.setProduct);
+
+  const getUserMeta = async () => {
+    const { data, error } = await supabase
+      .from('farmer_list_tb')
+      .select('user_meta_data')
+      .eq('user_id', bookmark.seller_id);
+
+    if (error) return null;
+
+    return data;
+  };
 
   const handleDeleteBookmark = async () => {
     Alert.alert('Are you sure?', `You are about to remove ${bookmark.name} in your bookmark`, [
@@ -50,13 +65,28 @@ const ProductSnippet: React.FC<EntrepLayoutQ['bookmarks'][number]> = (bookmark) 
     ]);
   };
 
+  const handleRedirect = async () => {
+    let userMeta = await getUserMeta();
+    if (!userMeta) return;
+
+    setProduct({ ...bookmark, user_meta_data: userMeta[0].user_meta_data });
+    router.push({
+      pathname: '/(entrepreneur)/(home-ordering)/ordering',
+      params: { from: 'home', product: bookmark.name, prodId: bookmark.id }
+    });
+  };
+
   return (
     <View>
       <View className="mt-2">
         <Text className="p-2 bg-primary/80 font-pregular text-white">{bookmark.category}</Text>
       </View>
 
-      <TouchableOpacity onLongPress={handleDeleteBookmark} className="gap-2 relative rounded-lg">
+      <TouchableOpacity
+        onPress={handleRedirect}
+        onLongPress={handleDeleteBookmark}
+        className="gap-2 relative rounded-lg"
+      >
         {loader ? (
           <View className="absolute bg-black/70 left-0 right-0 top-0 bottom-0 z-10 justify-center">
             <ActivityIndicator size="large" />

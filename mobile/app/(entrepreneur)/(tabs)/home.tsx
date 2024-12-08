@@ -8,7 +8,8 @@ import {
   Alert,
   ToastAndroid,
   ActivityIndicator,
-  TextInput
+  TextInput,
+  RefreshControl
 } from 'react-native';
 import Feather from '@expo/vector-icons/Feather';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
@@ -19,7 +20,7 @@ import { useCategorySelector } from '../_store/categoryStore';
 import { viewProductSelector } from '../_store/viewingProductStore';
 import { supabase } from '@/lib/supabase';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useBookmarksSelector } from '../_store/bookmarkStore';
 import SearchInput from '@/components/SearchInput';
 
@@ -170,6 +171,21 @@ const ProductSnippet: React.FC<EntrepLayoutQ['products'][number]> = (product) =>
 
 const HomeScreen = () => {
   const products = useProductsSelector((state) => state.products);
+  const setProducts = useProductsSelector((state) => state.setProducts);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    const { data, error } = (await supabase.rpc('refresh_products')) as PostgrestSingleResponse<
+      EntrepLayoutQ['products']
+    >;
+    if (error) {
+      ToastAndroid.show(error.message, ToastAndroid.LONG);
+    }
+    setProducts(data ?? []);
+    setRefreshing(false);
+  }, []);
+
   return (
     <SafeAreaView className="flex-1 bg-secondary-100">
       <View className="flex flex-1 h-full justify-center px-[10px] gap-[20px]">
@@ -186,6 +202,7 @@ const HomeScreen = () => {
             </View>
           )}
           contentContainerStyle={{ paddingBottom: 20 }}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         />
       </View>
     </SafeAreaView>

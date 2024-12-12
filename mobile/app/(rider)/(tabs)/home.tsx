@@ -89,7 +89,7 @@ const HomeScreen = () => {
     const { data, error } = (await supabase
       .from('processing_list_tb')
       .select('*')
-      .eq('farmer_user_id', user?.id)) as PostgrestSingleResponse<EntrepLayoutQ['processings']>;
+      .is('rider_user_id', null)) as PostgrestSingleResponse<EntrepLayoutQ['processings']>;
 
     if (error) {
       ToastAndroid.show(error.message, ToastAndroid.LONG);

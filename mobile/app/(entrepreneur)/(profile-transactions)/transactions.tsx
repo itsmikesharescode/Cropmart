@@ -1,10 +1,21 @@
-import { FlatList, Text, TouchableOpacity, View, Image } from 'react-native';
-import React from 'react';
+import {
+  FlatList,
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+  ToastAndroid,
+  RefreshControl
+} from 'react-native';
+import React, { useCallback, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
 import { useProcessingsSelector } from '../_store/processingStore';
 import { EntrepLayoutQ } from '@/lib/db_types/entrepLayoutQ.types';
+import { useUserSelector } from '@/store/useUser';
+import { supabase } from '@/lib/supabase';
+import { PostgrestSingleResponse } from '@supabase/supabase-js';
 
 const StatusSnippet: React.FC<EntrepLayoutQ['processings'][number]> = (transaction) => {
   const checkStatusName = (name: string) => {
@@ -57,7 +68,30 @@ const StatusSnippet: React.FC<EntrepLayoutQ['processings'][number]> = (transacti
 
 const TransactionsScreen = () => {
   const processings = useProcessingsSelector((state) => state.processings);
+  const setProcessings = useProcessingsSelector((state) => state.setProcessings);
 
+  const [refreshing, setRefreshing] = useState(false);
+  const user = useUserSelector((state) => state.userState);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+
+    const { data, error } = (await supabase
+      .from('processing_list_tb')
+      .select('*')
+      .eq('entrepreneur_user_id', user?.id)) as PostgrestSingleResponse<
+      EntrepLayoutQ['processings']
+    >;
+
+    if (error) {
+      ToastAndroid.show(error.message, ToastAndroid.LONG);
+      setRefreshing(false);
+      return;
+    }
+
+    setProcessings(data);
+    setRefreshing(false);
+  }, []);
   return (
     <SafeAreaView className="bg-secondary flex-1">
       <View className="p-4 items-start">
@@ -83,6 +117,7 @@ const TransactionsScreen = () => {
             </Text>
           </View>
         )}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       />
     </SafeAreaView>
   );

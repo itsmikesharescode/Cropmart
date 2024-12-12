@@ -1,7 +1,21 @@
 import { RiderLayoutQ } from '@/lib/db_types/riderLayoutQ.types';
-import { Text, View, Image, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
+import {
+  Text,
+  View,
+  Image,
+  SafeAreaView,
+  FlatList,
+  TouchableOpacity,
+  ToastAndroid,
+  RefreshControl
+} from 'react-native';
 import { useStatusSelector } from '../_store/statusStore';
 import { router } from 'expo-router';
+import { useUserSelector } from '@/store/useUser';
+import { useCallback, useState } from 'react';
+import { PostgrestSingleResponse } from '@supabase/supabase-js';
+import { supabase } from '@/lib/supabase';
+import { EntrepLayoutQ } from '@/lib/db_types/entrepLayoutQ.types';
 
 const StatusSnippet: React.FC<RiderLayoutQ['status'][number]> = (transaction) => {
   const setStat = useStatusSelector((state) => state.setStat);
@@ -61,7 +75,28 @@ const StatusSnippet: React.FC<RiderLayoutQ['status'][number]> = (transaction) =>
 
 const StatusScreen = () => {
   const status = useStatusSelector((state) => state.status);
+  const setStatus = useStatusSelector((state) => state.setStatus);
+  const [refreshing, setRefreshing] = useState(false);
+  const user = useUserSelector((state) => state.userState);
 
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+
+    const { data, error } = (await supabase
+      .from('processing_list_tb')
+      .select('*')
+      .eq('rider_user_id', user?.id)) as PostgrestSingleResponse<EntrepLayoutQ['processings']>;
+
+    if (error) {
+      ToastAndroid.show(error.message, ToastAndroid.LONG);
+      setRefreshing(false);
+      return;
+    }
+
+    setStatus(data);
+
+    setRefreshing(false);
+  }, []);
   return (
     <SafeAreaView className="bg-secondary-200/50 h-full">
       <View className="pt-10 px-[10px] items-start">
@@ -80,6 +115,7 @@ const StatusScreen = () => {
             <Text className="font-pregular text-base text-center ">No records</Text>
           </View>
         )}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       />
     </SafeAreaView>
   );

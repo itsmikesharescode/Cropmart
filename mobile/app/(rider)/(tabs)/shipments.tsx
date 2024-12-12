@@ -1,5 +1,14 @@
 import { RiderLayoutQ } from '@/lib/db_types/riderLayoutQ.types';
-import { Text, View, Image, SafeAreaView, FlatList, TouchableOpacity, ToastAndroid } from 'react-native';
+import {
+  Text,
+  View,
+  Image,
+  SafeAreaView,
+  FlatList,
+  TouchableOpacity,
+  ToastAndroid,
+  RefreshControl
+} from 'react-native';
 import { useStatusSelector } from '../_store/statusStore';
 import { router } from 'expo-router';
 import { useUserSelector } from '@/store/useUser';
@@ -76,7 +85,7 @@ const StatusScreen = () => {
     const { data, error } = (await supabase
       .from('processing_list_tb')
       .select('*')
-      .eq('farmer_user_id', user?.id)) as PostgrestSingleResponse<EntrepLayoutQ['processings']>;
+      .eq('rider_user_id', user?.id)) as PostgrestSingleResponse<EntrepLayoutQ['processings']>;
 
     if (error) {
       ToastAndroid.show(error.message, ToastAndroid.LONG);
@@ -84,7 +93,7 @@ const StatusScreen = () => {
       return;
     }
 
-    
+    setStatus(data);
 
     setRefreshing(false);
   }, []);
@@ -106,6 +115,7 @@ const StatusScreen = () => {
             <Text className="font-pregular text-base text-center ">No records</Text>
           </View>
         )}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       />
     </SafeAreaView>
   );

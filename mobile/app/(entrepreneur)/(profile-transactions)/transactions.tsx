@@ -24,7 +24,7 @@ const StatusSnippet: React.FC<EntrepLayoutQ['processings'][number]> = (transacti
     if (name === 'Looking for rider') return 'bg-yellow-500 text-white';
     return 'bg-red-500 text-white';
   };
-
+  //TODO: implement a modal that shows user info and rating mechanism
   return (
     <View className="relative mt-2  ">
       <Image

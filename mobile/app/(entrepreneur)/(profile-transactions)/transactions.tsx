@@ -33,12 +33,16 @@ const StatusSnippet: React.FC<EntrepLayoutQ['processings'][number]> = (transacti
         className="h-[200px] w-full rounded-lg"
       />
       <View className="absolute left-0 right-0 top-0 bottom-0 bg-black/60 rounded-lg"></View>
-      <View className="flex-col gap-[10px] flex-wrap absolute top-3 left-3">
+      <View className="flex-col justify-between gap-[10px] flex-wrap absolute top-3 left-3">
         <Text className={`${checkStatusName(transaction.status)} font-psemibold text-[15px] px-5`}>
           {transaction.status}
         </Text>
       </View>
-
+      <View className="flex-col justify-between gap-[10px] flex-wrap absolute top-3 right-3">
+        <TouchableOpacity className="px-2  bg-yellow-500 rounded-lg ">
+          <Text className="text-white font-psemibold underline">Rate this farmer?</Text>
+        </TouchableOpacity>
+      </View>
       <View className="flex-row gap-[10px] flex-wrap absolute bottom-[82px] left-3">
         <Text className="font-psemibold text-[15px] px-5 bg-secondary/80">
           Created At: {new Date(transaction.created_at).toLocaleDateString()} @{' '}

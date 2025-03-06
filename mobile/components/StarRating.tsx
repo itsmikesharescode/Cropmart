@@ -3,14 +3,18 @@ import React, { useEffect, useState } from 'react';
 import StarRating from 'react-native-star-rating-widget';
 import { useUserSelector } from '@/store/useUser';
 import { supabase } from '@/lib/supabase';
+import { PostgrestSingleResponse } from '@supabase/supabase-js';
 interface StarRatingProps {
   farmerId: string;
 }
-//TODO: implement an postgres function to check if a uid is already rated a farmer
+
 const StarRatingComponent = ({ farmerId }: StarRatingProps) => {
   const userState = useUserSelector((state) => state.userState);
+
   const [count, setCount] = useState(0);
   const [currentRating, setCurrentRating] = useState(1);
+
+  const [hasRated, setHasRated] = useState(false);
 
   const checkRatings = async () => {
     //overall count
@@ -32,12 +36,27 @@ const StarRatingComponent = ({ farmerId }: StarRatingProps) => {
     return count / overallCount;
   };
 
+  const hasUserRated = async () => {
+    const { data, error } = (await supabase.rpc('has_user_rated', {
+      farmer_id_client: farmerId
+    })) as PostgrestSingleResponse<boolean>;
+
+    if (error) return false;
+    return data;
+  };
+
   useEffect(() => {
     console.log(userState?.id);
 
     checkRatings().then((v) => {
       if (v) {
         setCount(v);
+      }
+    });
+
+    hasUserRated().then((v) => {
+      if (v) {
+        setHasRated(v);
       }
     });
   }, []);

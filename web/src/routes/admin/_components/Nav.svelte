@@ -5,7 +5,7 @@
   import { page } from '$app/stores';
   import Button from '$lib/components/ui/button/button.svelte';
   import AdminLogout from './AdminLogout.svelte';
-    import { fromUserState } from '$lib/states/userState.svelte';
+  import { fromUserState } from '$lib/states/userState.svelte';
 
   interface Props {
     children: Snippet;
@@ -26,6 +26,10 @@
     {
       url: '/admin/categories',
       name: 'Categories'
+    },
+    {
+      url: '/admin/ratings',
+      name: 'Ratings'
     },
     {
       url: '/admin/users',
@@ -64,8 +68,9 @@
     >
       <AdminLogout />
       <div class="flex items-center gap-2.5">
-        <p class="font-semibold leading-7 text-muted-foreground">Admin, <strong>{userState.get()?.email}</strong></p>
-       
+        <p class="font-semibold leading-7 text-muted-foreground">
+          Admin, <strong>{userState.get()?.email}</strong>
+        </p>
       </div>
     </nav>
 

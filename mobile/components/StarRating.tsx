@@ -4,6 +4,9 @@ import StarRating from 'react-native-star-rating-widget';
 import { useUserSelector } from '@/store/useUser';
 import { supabase } from '@/lib/supabase';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
+import { StarRatingDisplay } from 'react-native-star-rating-widget';
+import { TouchableOpacity } from 'react-native';
+import type { GestureResponderEvent } from 'react-native';
 interface StarRatingProps {
   farmerId: string;
 }
@@ -17,23 +20,12 @@ const StarRatingComponent = ({ farmerId }: StarRatingProps) => {
   const [hasRated, setHasRated] = useState(false);
 
   const checkRatings = async () => {
-    //overall count
-    const { count: overallCount, error: overallError } = await supabase
-      .from('ratings_tb')
-      .select('*', { count: 'exact', head: true });
-
-    if (overallError) return null;
-
-    //total ratings
-    const { count, error } = await supabase
-      .from('ratings_tb')
-      .select('*', { count: 'exact', head: true })
-      .eq('farmer_id', farmerId);
+    const { data, error } = (await supabase.rpc('calculate_rating', {
+      farmer_id_client: farmerId
+    })) as PostgrestSingleResponse<number>;
 
     if (error) return null;
-    if (!count || !overallCount) return null;
-
-    return count / overallCount;
+    return data;
   };
 
   const hasUserRated = async () => {
@@ -45,9 +37,16 @@ const StarRatingComponent = ({ farmerId }: StarRatingProps) => {
     return data;
   };
 
-  useEffect(() => {
-    console.log(userState?.id);
+  const rateHandler = async () => {
+    /* const {error} = await supabase.from("ratings_tb").insert({
+      entrep_id: userState?.id,
+      farmer_id: farmerId,
+      rating: currentRating,
+      review: review
+    }) */
+  };
 
+  useEffect(() => {
     checkRatings().then((v) => {
       if (v) {
         setCount(v);
@@ -63,13 +62,35 @@ const StarRatingComponent = ({ farmerId }: StarRatingProps) => {
 
   return (
     <View className="flex-row items-center gap-2">
-      <StarRating
-        rating={currentRating}
-        onChange={setCurrentRating}
-        starSize={20}
-        color="#FFD700"
-        emptyColor="#FFD700"
-      />
+      {hasRated ? (
+        <View>
+          <StarRatingDisplay
+            rating={currentRating}
+            starSize={20}
+            color="#FFD700"
+            emptyColor="#FFD700"
+          />
+        </View>
+      ) : (
+        <View className="gap-2">
+          <StarRating
+            rating={currentRating}
+            onChange={setCurrentRating}
+            starSize={20}
+            color="#FFD700"
+            emptyColor="#FFD700"
+          />
+          <TouchableOpacity
+            onPress={() => {
+              console.log(currentRating);
+            }}
+            className="bg-primary rounded-lg items-center justify-center"
+          >
+            <Text className="text-secondary-100 text-xs py-1">Rate</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
       <Text className="text-sm font-psemibold">{count.toFixed(2)} Ratings</Text>
     </View>
   );

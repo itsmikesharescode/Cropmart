@@ -7,6 +7,6 @@
 
 <ScrollArea class="w-[900px]" orientation="horizontal">
   <div class="p-4">
-    <RenderCategories />
+    <RenderCategories ratings={data.getAllRatings} />
   </div>
 </ScrollArea>

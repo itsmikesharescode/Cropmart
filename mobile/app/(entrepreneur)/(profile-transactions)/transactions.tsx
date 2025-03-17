@@ -16,6 +16,7 @@ import { EntrepLayoutQ } from '@/lib/db_types/entrepLayoutQ.types';
 import { useUserSelector } from '@/store/useUser';
 import { supabase } from '@/lib/supabase';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
+import { router } from 'expo-router';
 
 const StatusSnippet: React.FC<EntrepLayoutQ['processings'][number]> = (transaction) => {
   const checkStatusName = (name: string) => {
@@ -39,7 +40,19 @@ const StatusSnippet: React.FC<EntrepLayoutQ['processings'][number]> = (transacti
         </Text>
       </View>
       <View className="flex-col justify-between gap-[10px] flex-wrap absolute top-3 right-3">
-        <TouchableOpacity className="px-2  bg-yellow-500 rounded-lg ">
+        <TouchableOpacity
+          className="px-2  bg-yellow-500 rounded-lg"
+          onPress={() => {
+            router.push({
+              pathname: '/(entrepreneur)/(home-ordering)/ordering',
+              params: {
+                from: 'home',
+                product: transaction.product_obj.name,
+                prodId: transaction.product_obj.id
+              }
+            });
+          }}
+        >
           <Text className="text-white font-psemibold underline">Rate this farmer?</Text>
         </TouchableOpacity>
       </View>

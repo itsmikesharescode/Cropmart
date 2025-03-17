@@ -9,6 +9,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useCartSelector } from '../_store/cartStore';
 import { useUserSelector } from '@/store/useUser';
 import { UserMetaDataType } from '@/lib/db_types/user.types';
+import StarRatingComponent from '@/components/StarRating';
 
 type URLparams = {
   from: string;
@@ -108,7 +109,7 @@ const OrderingScreen = () => {
               </View>
             </View>
 
-            <View className="flex flex-row py-5 px-4">
+            <View className="flex flex-row pt-5 px-4">
               <View>
                 {product.user_meta_data.avatarLink ? (
                   <Image
@@ -129,6 +130,10 @@ const OrderingScreen = () => {
                 <Text className="font-pregular text-xs">{product.user_meta_data.mobileNumber}</Text>
                 <Text className="font-pregular text-xs">{product.user_meta_data.address}</Text>
               </View>
+            </View>
+
+            <View>
+              <StarRatingComponent farmerId={product.user_id} />
             </View>
 
             <View className="mb-20">

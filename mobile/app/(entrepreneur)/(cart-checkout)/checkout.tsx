@@ -71,7 +71,7 @@ const CheckoutScreen = () => {
             <View className="mt-5 pb-[10px]">
               <Text className="font-psemibold text-[30px]">Total: </Text>
               <Text className="font-psemibold text-[30px]">
-                ₱{' '}
+                ₱
                 {cart.length
                   ? cart
                       .map((item) => item.price * item.clientQuantity)
